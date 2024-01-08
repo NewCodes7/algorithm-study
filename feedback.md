@@ -65,6 +65,78 @@
 - 내가 문제를 푸는 게 아니야! 컴퓨터가 문제를 풀게 해야 해. 컴퓨터가 일반화를 하게 해야 해.
 - 2차원 공간에서 이동해야 한다면, 이동할 수 있는 경우의 수를 dx(행), dy(열) 배열 형태로 저장하고 for문 돌리자.
 
+### 이코테 예제 문제(게임 개발)
+- 2차원 공간에서 이동하는 경우
+    - dx, dy, direction 배열로 저장해두기
+    - 예: nx = x + dx[direction[i]];
+- indexOf는 list에서만 쓸 수 있음.
+- 리스트 선언
+``` 
+List<String> s2 = new ArrayList<String>(Arrays.asList("1", "2", "3")); // 원소 자유롭게 수정 가능
+List<String> s5 = Arrays.asList("1", "2", "3"); // set을 통해서만 수정 가능
+List<String> s5 = List.of("1", "2", "3"); // 수정 불가능
+```
+
+
+```
+import java.io.*;
+import java.util.*;
+
+public class Main{
+    public static void main (String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+        int[][] map = new int[Integer.parseInt(st.nextToken())][Integer.parseInt(st.nextToken())];
+        st = new StringTokenizer(br.readLine(), " ");
+        int[] character = {Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken())};
+        List<Integer> direction = List.of(0, -1, -2, -3);
+        int[] dx = {-1, 0, 1, 0};
+        int[] dy = {0, 1, 0, -1};
+
+        for (int i = 0; i < map.length; i++) {
+            st = new StringTokenizer(br.readLine(), " ");
+            for (int j = 0; j < map[0].length; j++) {
+                map[i][j] = Integer.parseInt(st.nextToken());
+            }
+        }
+
+        int limit = 0;
+        int count = 1;
+        map[character[0]][character[1]] = -1;
+        while (true) {
+            character[2]--;
+            if (character[2] == -4) character[2] = 0;
+            int newX = character[0] + dx[direction.indexOf(character[2])];
+            int newY = character[1] + dy[direction.indexOf(character[2])];
+            if (map[newX][newY] != 1 && map[newX][newY] != -1) {
+                map[character[0]][character[1]] = -1; // 이미 가본 곳은 -1로 체크
+                character[0] = newX;
+                character[1] = newY;
+                limit = 0;
+                count++;
+                continue;
+            } else {
+                limit++;
+            }
+            if (limit == 4) {
+                character[2]++;
+                newX = character[0] - dx[direction.indexOf(character[2])]; // indexOf
+                newY = character[1] - dy[direction.indexOf(character[2])];
+                if (map[newX][newY] != 1) {
+                    character[0] = newX;
+                    character[1] = newY;
+                    limit = 0;
+                } else {
+                    break;
+                }
+            }
+        }
+
+        System.out.println(count);
+    }
+}
+```
 
 
 ### 그 외 학습 내용
