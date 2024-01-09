@@ -4,17 +4,18 @@
 
 ### [행렬 덧셈](백준/Bronze/2738. 행렬 덧셈)
 - Scanner보다는 BufferedReader를 활용하는 게 시간 측면에서 효율적임.
-- 풀이 방법이 떠올렸다고 해서 바로 풀이 들어가지 말고, 조금 더 아이디어를 다듬고 들어가자. 
+- 풀이 방법이 떠올렸다고 해서 바로 풀이 들어가지 말고, _조금 더 아이디어를 다듬고 들어가자._
     - 더 효율적인 방법이 있을 수 있고, 혹은 해당 방법에서 더욱 최적화된 코드를 짤 수 있게 된다.
 - 중간중간 log를 찍어보며 오류가 없는지 확인하자.
 
 ### [최댓값](백준/Bronze/2566. 최댓값)
-- 제출 실패해도 당황하지 말자. 요구 사항을 놓친 부분은 없는지, 예외 사항이 있는지 체크하자.
+- _제출 실패해도 당황하지 말자._
+    -  요구 사항을 놓친 부분은 없는지, 예외 사항이 있는지 체크하자.
 
 ### [세로읽기](백준/Bronze/10798. 세로읽기)
 - 초기화된 배열의 요소는 0을 가짐.
 - 코드 본격적으로 작성하기 전에 조금 더 설계하자.
-- 2차원 배열 출력하는 방법: Arrays.deepToString(arr)
+- 2차원 배열 출력하는 방법: **Arrays.deepToString(arr)**
 - 입력 요구사항 꼼꼼히 체크하자. (최대와 최소도 체크할 것)
     - 최대 이용해서 2차원 배열 선언해둘 수 있음.
 - 반복문에서 순서(index)가 중요하다면 while 보다는 for
@@ -43,7 +44,7 @@
 - int offset = 'A'; <- 아스키코드로 저장됨.
 - 문자열을 CharArray로 바꾸고 싶을 때: String.toCharArray
 - 절대적인 위치를 평행이동하여 상대적인 위치를 이용해 더욱 편하게 계산할 수 있음.
-- 코드를 순차적으로 짜는 것보다는 구조적인 설계 코드를 짜두고 들어가는 것도 좋음.
+- 코드를 순차적으로 짜는 것보다는 _구조적인 설계 코드_ 를 짜두고 들어가는 것도 좋음.
 
 ### [이상한 문자 만들기](프로그래머스/1/12930. 이상한 문자 만들기)
 - 문제 요구사항 꼼꼼히 읽자!! 훑어읽지마!!
@@ -54,7 +55,7 @@
 - 메서드 분리의 필요성! (레벨2이상은 메서드 분리하면서 풀어야 할 듯) (급하게 하지마)
     - 리팩토링 용이함.
     - 구현하는 동안 가독성 올라감.
-- 문자열 비교는 equals!!!
+- 문자열 비교는 _equals_ !!!
 - subString (x) substring (o)
 
 
@@ -78,70 +79,12 @@ List<String> s5 = List.of("1", "2", "3"); // 수정 불가능
 ```
 
 
-```
-import java.io.*;
-import java.util.*;
-
-public class Main{
-    public static void main (String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
-        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-        int[][] map = new int[Integer.parseInt(st.nextToken())][Integer.parseInt(st.nextToken())];
-        st = new StringTokenizer(br.readLine(), " ");
-        int[] character = {Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken())};
-        List<Integer> direction = List.of(0, -1, -2, -3);
-        int[] dx = {-1, 0, 1, 0};
-        int[] dy = {0, 1, 0, -1};
-
-        for (int i = 0; i < map.length; i++) {
-            st = new StringTokenizer(br.readLine(), " ");
-            for (int j = 0; j < map[0].length; j++) {
-                map[i][j] = Integer.parseInt(st.nextToken());
-            }
-        }
-
-        int limit = 0;
-        int count = 1;
-        map[character[0]][character[1]] = -1;
-        while (true) {
-            character[2]--;
-            if (character[2] == -4) character[2] = 0;
-            int newX = character[0] + dx[direction.indexOf(character[2])];
-            int newY = character[1] + dy[direction.indexOf(character[2])];
-            if (map[newX][newY] != 1 && map[newX][newY] != -1) {
-                map[character[0]][character[1]] = -1; // 이미 가본 곳은 -1로 체크
-                character[0] = newX;
-                character[1] = newY;
-                limit = 0;
-                count++;
-                continue;
-            } else {
-                limit++;
-            }
-            if (limit == 4) {
-                character[2]++;
-                newX = character[0] - dx[direction.indexOf(character[2])]; // indexOf
-                newY = character[1] - dy[direction.indexOf(character[2])];
-                if (map[newX][newY] != 1) {
-                    character[0] = newX;
-                    character[1] = newY;
-                    limit = 0;
-                } else {
-                    break;
-                }
-            }
-        }
-
-        System.out.println(count);
-    }
-}
-```
-
-
 ### 그 외 학습 내용
 - 배열을 스트림으로: Arrays.stream(arr)
 - while: 반목문 탈출 조건 성립하는지 다시 한 번 확인하자.
 - main 클래스 밖에 새로운 클래스 선언 하려면 public 없이.
 - 풀이 아이디어 떠올렸다면 해당 알고리즘 검증하는 시간 가지기. 정확히 동작하는지.
-- 리스트의 총합: arr.stream().mapToInt(Integer::intValue).sum()
+- 배열, 리스트의 총합
+    - Arrays.stream(intArr).sum();
+    - Arrays.stream(stringArr).mapToInt(Integer::parseInt).sum();
+    - integerList.stream().mapToInt(Integer::intValue).sum(); // Integer -> int (sum 때문에)
