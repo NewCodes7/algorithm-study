@@ -142,3 +142,4 @@ public class Main{
 ### 그 외 학습 내용
 - 배열을 스트림으로: Arrays.stream(arr)
 - while: 반목문 탈출 조건 성립하는지 다시 한 번 확인하자.
+- main 클래스 밖에 새로운 클래스 선언 하려면 public 없이.
