@@ -277,18 +277,8 @@ public class Main {
 ```
 
 - 개선된 알고리즘(우선순위 큐)
-  - 우선순위 큐
-    - 의미: 우선순위가 가장 높은 데이터를 가장 먼제 삭제하는 자료구조
-    - 조건: 우선순위 큐에 저장할 객체는 Comparable Interface를 구현해야 함. compareTo를 오버라이딩하여 우선순위 조건을 리턴하면 됨.
-    - 힙(Heap): 우선순위 큐를 구현하기 위해 사용하는 자료구조 중의 하나
-      - 최소힙: 최솟값이 우선순위인 큐
-      - 최대힙: 최댓값이 우선순위인 큐
-      - 삽입 및 삭제 시간 복잡도: O(logN) // 왜?
-  - 시간 복잡도: O(ElogV)
-- 소스코드
-  - implements
-  - Comparable
-  - CompareTO
+  - 시간 복잡도: O(ElogV)  (E: 간선의 개수) (성능이 잘 이해 안 됨. 다시 봐보기)
+  - 소스코드
 ```java
 import java.util.*;
 
@@ -392,6 +382,82 @@ public class Main {
             else {
                 System.out.println(d[i]);
             }
+        }
+    }
+}
+```
+
+#### 플로이드 워셜 알고리즘
+- 의미: 모든 노드에서 다른 모든 노드까지의 최단 경로를 계산함.
+- 정보 저장: 2차원 테이블에 최단 거리 정보 저장함.
+- 과정
+  - 다익스트라 알고리즘처럼 단계 별로 거쳐가는 노드를 기준으로 수행함.
+  - 다만, 매 단계 방문하지 않은 노드 중 최단 거리를 갖는 노드를 찾는 과정은 불필요함.
+- 시간 복잡도: O(N^3)
+- 점화식
+  <img width="765" alt="스크린샷 2024-01-11 오후 4 17 21" src="https://github.com/NewCodes7/algorithm-study/assets/123712285/6b04835d-6e8e-4163-b3d1-3b42be466e5d">
+- 소스코드
+```java
+import java.util.*;
+
+public class Main {
+
+    public static final int INF = (int) 1e9; // 무한을 의미하는 값으로 10억을 설정
+    // 노드의 개수(N), 간선의 개수(M)
+    // 노드의 개수는 최대 500개라고 가정
+    public static int n, m;
+    // 2차원 배열(그래프 표현)를 만들기
+    public static int[][] graph = new int[501][501];
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        n = sc.nextInt();
+        m = sc.nextInt();
+
+        // 최단 거리 테이블을 모두 무한으로 초기화
+        for (int i = 0; i < 501; i++) {
+            Arrays.fill(graph[i], INF);
+        }
+
+        // 자기 자신에서 자기 자신으로 가는 비용은 0으로 초기화
+        for (int a = 1; a <= n; a++) {
+            for (int b = 1; b <= n; b++) {
+                if (a == b) graph[a][b] = 0;
+            }
+        }
+
+        // 각 간선에 대한 정보를 입력 받아, 그 값으로 초기화
+        for (int i = 0; i < m; i++) {
+            // A에서 B로 가는 비용은 C라고 설정
+            int a = sc.nextInt();
+            int b = sc.nextInt();
+            int c = sc.nextInt();
+            graph[a][b] = c;
+        }
+
+        // 점화식에 따라 플로이드 워셜 알고리즘을 수행
+        for (int k = 1; k <= n; k++) {
+            for (int a = 1; a <= n; a++) {
+                for (int b = 1; b <= n; b++) {
+                    graph[a][b] = Math.min(graph[a][b], graph[a][k] + graph[k][b]);
+                }
+            }
+        }
+
+        // 수행된 결과를 출력
+        for (int a = 1; a <= n; a++) {
+            for (int b = 1; b <= n; b++) {
+                // 도달할 수 없는 경우, 무한(INFINITY)이라고 출력
+                if (graph[a][b] == INF) {
+                    System.out.print("INFINITY ");
+                }
+                // 도달할 수 있는 경우 거리를 출력
+                else {
+                    System.out.print(graph[a][b] + " ");
+                }
+            }
+            System.out.println();
         }
     }
 }
