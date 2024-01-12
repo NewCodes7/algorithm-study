@@ -81,9 +81,38 @@ List<String> s5 = List.of("1", "2", "3"); // 수정 불가능
 
 ## 완전 탐색
 ### [모의고사](프로그래머스/Lv.1/42840. 모의고사)
-- list를 array로 바꾸는 방법. Integer, int
-- 스트림, 컬렉션 문법
 - 배열에서 최댓값 찾기. 최댓값에 해당하는 놈 index 가져오기
+- 깃허브 마크다운 더 쉽게 쓰는 방법?
+- 자바의 타입
+    - 기본 타입(primitive type)
+        - 정수 타입: byte, char, short, int, long
+        - 실수 타입: float, double
+        - 논리 타입: boolean
+    - 참조 타입(reference type)
+        - 배열 타입
+        - 열거 타입(enum)
+        - 클래스 (ex. String, Integer
+        - 인터페이스
+    - 차이점: 기본 타입은 실제 값을 변수 안에 저장하지만, 참조 타입은 메모리의 번지를 저장함.
+- 리스트, 배열 변환
+```java
+// IntegerList to intArray
+int[] intArray = IntegerList.stream()
+                            .mapToInt(Integer::intValue).toArray();
+
+// intArray to IntegerList
+List<Integer> integerList = Arrays.stream(intArray)
+                                   .boxed()
+                                   .collect(Collectors.toList());
+```
+- 스트림 문법
+    - 의미: 자바8에서 등장한 새로운 기술 중의 하나로, 컬렉션을 함수형 프로그래밍 스타일로 다룰 수 있게 해주는 API
+    - 스트림 연산
+        - 중간 연산
+        - 최종 연산
+- 람다
+- 컬렉션
+
 
 ### 그 외 학습 내용
 - 배열을 스트림으로: Arrays.stream(arr)
