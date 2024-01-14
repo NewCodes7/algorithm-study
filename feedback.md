@@ -112,7 +112,9 @@ List<String> stringList = Arrays.stream(stringArray)
 ```
 - 배열/리스트 최댓값 구하기
 ```java
-int max = Arrays.stream(intArray).max().getAsInt();
+int max = Arrays.stream(intArray).max().getAsInt(); 
+//max는 OptionalInt 객체로 반환. getAsInt는 해당 객체에서 실제 int값을 가져옴.
+// OptionalInt는 Java 8부터 추가된 클래스로, 값이 존재할 수도 있고 없을 수도 있는 값을 감싸는 래퍼 클래스
 int max = Collections.max(intList);
 ```
 - 스트림 문법
@@ -123,6 +125,39 @@ int max = Collections.max(intList);
 - Collection(인터페이스): list, set, map
 - Collections(유틸리티 클래스): 컬렉션을 위한 유용한 메서드 제공
 
+
+### [카펫](프로그래머스/Lv.2/42842. 카펫)
+- import java.util.*; 하고 시작하자!!
+- 2차원 리스트 선언
+```java
+List<List<Integer>> list1 = new ArrayList<>();
+```
+
+### [수식 최대화](프로그래머스/Lv.2/67257. ［카카오 인턴］ 수식 최대화)
+- 문자열에 특정 문자가 포함되었는지 확인하고 싶다면 -> str.contains("dd");
+- 네이밍 조금만 더 신경쓰자. 
+- **문제 읽을 때 숫자 범위 체크하고 int, long 골라서 사용하자.**
+  - 2,147,483,647 넘어가거나 2의 31제곱 넘어갈 때
+  - 2,147,483,648 이하이거나 2의 31제곱 -1 이하일 때
+- 길이 확인 메서드
+```java
+int l1 = string.length();
+int l2 = list.size();
+int l3 = array.length;
+```
+- Integer.toString(int): int to string
+- 문자열끼리 비교하는 거 주의하자!!!(문자열은 클래스야!) str1.equals(str2)
+- StringTokenizer 학습 (문자열 분할할 때 완전 유용!)
+```java
+StringTokenizer st = new StringTokenizer(expression, "+-*", true); 
+// "+", "-". "*"을 각각으로 구분자 취급하여 분할함. 
+// 구분자를 토큰에 포함할 것인지 설정할 수 있음.
+List<String> tokens = new ArrayList<>();
+while (st.hasMoreTokens()) {
+    tokens.add(st.nextToken());
+}
+```
+- for 문에서 제한 조건을 리스트 size로 제한했지만 중간에 리스트 요소를 삭제하거나 추가한다면, i 업데이트 시켜주기!!
 
 ### 그 외 학습 내용
 - 배열을 스트림으로: Arrays.stream(arr)
