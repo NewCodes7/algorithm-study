@@ -58,6 +58,17 @@
 - 문자열 비교는 _equals_ !!!
 - subString (x) substring (o)
 
+### [3진법 뒤집기](프로그래머스/Lv.1/68935. 3진법 뒤집기)
+- 진법 변환
+```java
+int a = 10;
+String b = Integer.toString(a, 3); // 10진수 -> n진수
+int c = Integer.parserInt(b, 3); // n진수 -> 10진수
+```
+- 문자열 뒤집기 -> sb이용!! 
+```java
+String s = new StringBuilder(str).reverse().toString(); // append 써도 됨.
+```
 
 ## 구현
 ### 이코테 예제 문제(왕실의 나이트)
@@ -72,7 +83,7 @@
     - 예: nx = x + dx[direction[i]];
 - indexOf는 list에서만 쓸 수 있음.
 - 리스트 선언
-``` 
+```java
 List<String> s2 = new ArrayList<String>(Arrays.asList("1", "2", "3")); // 원소 자유롭게 수정 가능
 List<String> s5 = Arrays.asList("1", "2", "3"); // set을 통해서만 수정 가능
 List<String> s5 = List.of("1", "2", "3"); // 수정 불가능
@@ -96,7 +107,8 @@ List<String> s5 = List.of("1", "2", "3"); // 수정 불가능
 ```java
 // IntegerList to intArray
 int[] intArray = IntegerList.stream()
-                            .mapToInt(Integer::intValue).toArray();
+                            .mapToInt(Integer::intValue)
+                            .toArray();
 
 // intArray to IntegerList
 List<Integer> integerList = Arrays.stream(intArray)
@@ -113,7 +125,7 @@ List<String> stringList = Arrays.stream(stringArray)
 - 배열/리스트 최댓값 구하기
 ```java
 int max = Arrays.stream(intArray).max().getAsInt(); 
-//max는 OptionalInt 객체로 반환. getAsInt는 해당 객체에서 실제 int값을 가져옴.
+// max는 OptionalInt 객체로 반환. getAsInt는 해당 객체에서 실제 int값을 가져옴.
 // OptionalInt는 Java 8부터 추가된 클래스로, 값이 존재할 수도 있고 없을 수도 있는 값을 감싸는 래퍼 클래스
 int max = Collections.max(intList);
 ```
@@ -124,6 +136,7 @@ int max = Collections.max(intList);
         - 최종 연산
 - Collection(인터페이스): list, set, map
 - Collections(유틸리티 클래스): 컬렉션을 위한 유용한 메서드 제공
+- Collectors: 스트림 문법
 
 
 ### [카펫](프로그래머스/Lv.2/42842. 카펫)
