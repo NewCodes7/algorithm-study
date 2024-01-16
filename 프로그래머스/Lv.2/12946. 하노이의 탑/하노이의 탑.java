@@ -11,7 +11,7 @@ class Solution {
         
         hanoi(n-1, from, empty, process); // 점화식의 중요성
         hanoi(1, from, to, process);
-        hanoi(n-1, empty, to, process);
+        hanoi(n-1, empty, to, process); // 모든 함수가 리턴으로 향함.
     }
     
     public int[][] solution(int n) {

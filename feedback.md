@@ -1,5 +1,11 @@
 # 풀이 후 피드백
 
+## 그리디
+### [뒤집기](백준/Silver/1439. 뒤집기)
+- 겉보기에 쉬워보이더라도 설계 꼼꼼히 하고 들어가자!!
+
+
+
 ## 2차원 배열
 
 ### [행렬 덧셈](백준/Bronze/2738. 행렬 덧셈)
@@ -70,6 +76,35 @@ int c = Integer.parserInt(b, 3); // n진수 -> 10진수
 String s = new StringBuilder(str).reverse().toString(); // append 써도 됨.
 ```
 
+## 재귀
+### [쿼드압축](프로그래머스/Lv.2/68936. 쿼드압축 후 개수 세기)
+- 재귀 3요소: 상태, 종료 조건, 점화식
+- 재귀에서 축적된 데이터를 return에 쌓여서 하는 방법이 있고, 필드로 선언된 저장소에 저장하는 방법이 있음.
+
+### [하노이의 탑](프로그래머스/Lv.2/12946. 하노이의 탑)
+- 풀이에 전혀 감이 안 올 때: 우선 시행해보기 -> 관찰 -> 규칙성 발견
+- 재귀는 재귀로 푸는 게 코드 간결해짐.
+- 배열 복사
+  - 얕은 복사
+  - 깊은 복사
+- 2차원 리스트 to 2차원 배열
+- System.out.print 반복문 안에서 사용하다면 제출할 때 '출력 크기 초과' 걸릴 수 있음!
+  - 최종 제출 전엔 프린트문 빼자!
+- 솔루션 클래스 내 메서드 선언은 private로!
+- 메서드 내 실행 중단하고 싶을 때: return;
+- list to array
+```java
+list.toArray(); // Object[]로 반환
+String[] array = list.toArray();
+String[] array = list.toArray(new String[0]); // 타입 명시
+
+List<int[]> process = new ArrayList<>();
+return process.toArray(new int[0][]);
+```
+- list의 변경 (매개변수 통한) <-> 일반 변수 알아보기!!
+
+
+
 ## 구현
 ### 이코테 예제 문제(왕실의 나이트)
 - 정수형 자료형의 범위: int < long
@@ -116,7 +151,7 @@ List<Integer> integerList = Arrays.stream(intArray)
                                    .collect(Collectors.toList());
 
 // StringList to StringArr
-String[] stringArray = stringList.stream().toArray(String[]::new);
+String[] stringArray = stringList.toArray(new String[0]);
 
 // StringArr to StringList
 List<String> stringList = Arrays.stream(stringArray)
