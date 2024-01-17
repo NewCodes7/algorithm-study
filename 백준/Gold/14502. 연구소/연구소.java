@@ -48,9 +48,17 @@ public class Main{
                     }
                 }
             }
-            
-            result = Math.max(getScore(), result);
 
+            int score = 0;
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < m; j++) {
+                    if (temp[i][j] == 0) {
+                        score++;
+                    }
+                }
+            }
+
+            result = Math.max(score, result);
             return;
         }
 
