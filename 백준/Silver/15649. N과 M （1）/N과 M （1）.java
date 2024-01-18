@@ -1,40 +1,42 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
-public class Main{
-    private static int n, m;
-    private static List<Integer> result = new ArrayList<>();
+public class Main {
+    static int N, M;
+    static char[] arr;
+    static boolean[] ck;
+    static StringBuilder sb = new StringBuilder();
 
-    public static void permute(int count) {
-        if (count == m) { // m이 3이든 4이든 적용될 수 있어야함. 백트랙킹 내부코드에서 수정할 필요가 있어보임.
-            StringBuilder sb = new StringBuilder();
-            for (int c : result) {
-                sb.append(c).append(" ");
-            }
-            System.out.println(sb.toString());
-            return;
-        }
-        for (int i = 1; i <= n; i++) {
-            if (!result.contains(i)) {
-                result.add(i);
-                count++;
-                permute(count);
-                result.remove(result.size()-1);
-                count--;
-            }
-
-        }
-
-    }
-
-    public static void main (String[] args) throws IOException {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
 
-        permute(0);
-     }
+        arr = new char[2 * M];
+        ck = new boolean[N + 1];
+        back(0);
+        System.out.print(sb);
+    }
+
+    static void back(int idx) {
+        if (idx == M) {
+            arr[2 * M - 1] = '\n';
+            sb.append(arr); // arr를 통째로
+            return ;
+        }
+
+        for (int i = 1; i <= N; i++) {
+            if (!ck[i]) {
+                ck[i] = true; // 방문 처리
+                arr[2 * idx] = (char)(i + '0'); // append 편하게 하려고 ' ' 이것도 쓰려고 char로 쓴 듯.
+                arr[2 * idx + 1] = ' '; // 미리 출력 형식 고려
+                back(idx + 1);
+                ck[i] = false;
+            }
+        }
+    }
 }
