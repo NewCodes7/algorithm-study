@@ -1,12 +1,13 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 public class Main {
     private static int minCityD = (int) (1e9);
     private static int n, m;
-    private static int[][] graph;
     private static List<int[]> chicken = new ArrayList<>();
     private static List<int[]> selectedChicken = new ArrayList<>();
     private static List<int[]> house = new ArrayList<>();
@@ -29,17 +30,11 @@ public class Main {
         for (int[] h : house) {
             int chickenD = (int) (1e9);
             for (int[] c : selectedChicken) {
-                int d = Math.abs(h[0] - c[0]) + Math.abs(h[1] - c[1]);
-                if (d < chickenD) {
-                    chickenD = d;
-                }
+                chickenD = Math.min(chickenD, Math.abs(h[0] - c[0]) + Math.abs(h[1] - c[1]));
             }
             totalD += chickenD;
         }
-
-        if (totalD < minCityD) {
-            minCityD = totalD;
-        }
+        minCityD = Math.min(minCityD, totalD);
     }
 
 
@@ -49,19 +44,13 @@ public class Main {
 
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
-        graph = new int[n + 1][n + 1];
 
         for (int i = 1; i <= n; i++) {
             st = new StringTokenizer(br.readLine());
             for (int j = 1; j <= n; j++) {
                 int c = Integer.parseInt(st.nextToken());
-                graph[i][j] = c;
-                if (c == 2) {
-                    chicken.add(new int[] {i, j});
-                }
-                if (c == 1) {
-                    house.add(new int[] {i, j});
-                }
+                if (c == 2) chicken.add(new int[] {i, j});
+                if (c == 1) house.add(new int[] {i, j});
             }
         }
 
