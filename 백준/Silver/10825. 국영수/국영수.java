@@ -1,11 +1,11 @@
 import java.io.*;
 import java.util.*;
 
-class Student implements Comparable<Student> {
-    private String name;
-    private int korean;
-    private int english;
-    private int math;
+class Student implements Comparable<Student> { // Comparator과의 차이점?
+    private final String name;
+    private final int korean;
+    private final int english;
+    private final int math;
 
     public Student(String name, int korean, int english, int math) {
         this.name = name;
@@ -31,26 +31,17 @@ class Student implements Comparable<Student> {
     }
 
     @Override
-    public int compareTo(Student other) {
-        if (other.getKorean() > getKorean()) {
-            return 1;
-        }
+    public int compareTo(Student other) { // 양수 반환이면 매개변수 사전순으로 other가 먼저 표시됨.
         if (other.getKorean() == getKorean()) {
-            if (other.getEnglish() > getEnglish()) {
-                return -1;
-            }
             if (other.getEnglish() == getEnglish()) {
-                if (other.getMath() > getMath()) {
-                    return 1;
-                }
                 if (other.getMath() == getMath()) {
-                    return getName().compareTo(other.getName()); // 이름순 정렬만 체크하자
+                    return getName().compareTo(other.getName()); // 이름순 정렬
                 }
-                return -1; // 이거 빼먹어서 거꾸로됨 수학
+                return other.getMath() - getMath();
             }
-            return 1;
+            return getEnglish() - other.getEnglish();
         }
-        return -1;
+        return other.getKorean() - getKorean();
     }
 }
 
@@ -76,9 +67,11 @@ public class Main {
 
         Collections.sort(score);
 
+        StringBuilder sb = new StringBuilder();
         for (Student s : score) {
-            System.out.println(s.getName());
+            sb.append(s.getName()).append("\n");
         }
 
+        System.out.println(sb);
     }
 }
