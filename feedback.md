@@ -272,6 +272,105 @@ while (st.hasMoreTokens()) {
 ```
 - for 문에서 제한 조건을 리스트 size로 제한했지만 중간에 리스트 요소를 삭제하거나 추가한다면, i 업데이트 시켜주기!!
 
+---
+## 구현
+### [국영수](백준/Silver/10825. 국영수)
+- 정렬하고 싶을 때
+  - Comparable
+    - 자기 자신과 매개변수를 비교하는 인터페이스
+    - 반드시 compareTo 메서드를 통해 구현해야 함.
+    - 문자열에서 사용되는 compareTo
+    ```java
+    System.out.print("a".compareTo("b")); // -1 (직관적으로 a - b 라고 생각하면 될 듯.)
+    ```
+    - 객체에서 사용되는 compareTo
+    ```java
+    class student implements Comparable<Student> {
+        // 필드, 생성자, 메서드 선언
+
+        @Override
+        public int compareTo(Student other) {
+            return other.getScore() - getScore(); // 양수 반환하면 매개변수 other가 사전 순으로 먼저 표시됨.
+            // 만약 계산된 값이 int 자료형의 범위를 넘을 것 같다면 부등호로 체크하는 게 안전.
+        }
+    }
+
+    Collections.sort(student 객체를 담은 리스트); // 사용법
+    ```
+
+  - Comparator
+    - 두 매개변수 객체를 비교하는 인터페이스
+    - compare 메서드를 통해 구현해야 함.
+    - 정렬 기준을 외부에서 제공할 수 있음.
+    - comparator가 뭔가 더 자유도가 높은 느낌.
+    ```java
+    import java.util.ArrayList;
+    import java.util.Collections;
+    import java.util.Comparator;
+    import java.util.List;
+
+    class Person {
+        private String name;
+        private int age;
+
+        public Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public int getAge() {
+            return age;
+        }
+
+        // 여기에도 compare 메서드 작성할 수 있음. 근데 여기에 할 거면 comparator의 장점활용 못함.
+        @Override
+        public String toString() {
+            return "Person{" +
+                    "name='" + name + '\'' +
+                    ", age=" + age +
+                    '}';
+        }
+    }
+
+    class AgeComparator implements Comparator<Person> { // 첫번째 comparator
+        @Override
+        public int compare(Person person1, Person person2) {
+            return Integer.compare(person1.getAge(), person2.getAge()); // 오름차순
+        }
+    }
+
+    class NameComparator implements Comparator<Person> { // 두번째 comparator
+        @Override
+        public int compare(Person person1, Person person2) {
+            return person1.getName().compareTo(person2.getName()); // 오름차순
+        }
+    }
+
+    public class ExternalComparatorExample {
+        public static void main(String[] args) {
+            List<Person> people = new ArrayList<>();
+            people.add(new Person("Alice", 30));
+            people.add(new Person("Bob", 25));
+            people.add(new Person("Charlie", 35));
+
+            // 외부에서 정렬 기준을 제공 (나이순)
+            Collections.sort(people, new AgeComparator());
+            System.out.println("나이순 정렬: " + people);
+
+            // 외부에서 정렬 기준을 제공 (이름순)
+            Collections.sort(people, new NameComparator());
+            System.out.println("이름순 정렬: " + people);
+        }
+    }
+    ```
+
+
+---
+
 
 ## 다이나믹 프로그래밍
 ### [정수 삼각형](백준/Silver/1932. 정수 삼각형)
