@@ -17,10 +17,6 @@ public class Main {
             v[a] = b;
         }
 
-        for (int i = 0; i < 501; i++) {
-            dp[i] = 0;
-        }
-
         for (int i = 1; i < 501; i++) {
             for (int j = 0; j < i; j++) {
                 if (v[j] < v[i]) { // dp 자리 아니다!!
@@ -33,7 +29,7 @@ public class Main {
         for (int c : dp) {
             maxValue = Math.max(maxValue, c);
         }
-        
+
         System.out.println(n - maxValue);
     }
 }
