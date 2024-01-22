@@ -4,6 +4,17 @@
 ### [뒤집기](백준/Silver/1439. 뒤집기)
 - 겉보기에 쉬워보이더라도 설계 꼼꼼히 하고 들어가자!!
 
+## 백트랙킹
+### [N과M](백준/Silver/15649. N과 M （1）)
+- StringBuilder.append(): 매개변수에 char,int 등 원시 자료형 들어갈 수 있다. 배열도!!! char[]도 가능!!
+- 방문처리를 따로 boolean으로 처리할 수도 있음.
+
+### [치킨 배달](백준/Gold/15686. 치킨 배달)
+- 자료구조에만 의존하지 말고, 객체지향적으로 (클래스 이용해서) 코드 짜보기. (확장성)
+- 역시 설계 꼼꼼히 해야 한다.
+- 백트랙킹(조합, 순열 등) 좀 더 public한 코드를 짜보자. 너무 내 주관적인 코드인 것 같음. 
+
+
 ## BFS
 ### [특정 거리의 도시 찾기](백준/Silver/18352. 특정 거리의 도시 찾기)
 - 모든 경로 길이가 똑같고 최단 경로를 구하라하면 BFS유리
@@ -38,6 +49,23 @@ public static void dfs(int count) {
                     count -= 1;
                 }
             }
+        }
+    }
+```
+
+### [연산자 끼워넣기](백준/Silver/14888. 연산자 끼워넣기)
+- 순열 알고리즘 이해해보자
+```java
+public static void permute(ArrayList<Integer> list, int start) {
+        if (start == list.size() - 1) {
+            System.out.println(list);
+            return;
+        }
+
+        for (int i = start; i < list.size(); i++) {
+            Collections.swap(list, start, i);
+            permute(list, start + 1);
+            Collections.swap(list, start, i); // backtrack
         }
     }
 ```
@@ -244,7 +272,15 @@ while (st.hasMoreTokens()) {
 ```
 - for 문에서 제한 조건을 리스트 size로 제한했지만 중간에 리스트 요소를 삭제하거나 추가한다면, i 업데이트 시켜주기!!
 
-### 그 외 학습 내용
+
+## 다이나믹 프로그래밍
+### [정수 삼각형](백준/Silver/1932. 정수 삼각형)
+- st.countTokens(); <- 이거 쓰는 거 조심하자!
+  - 왜냐하면 nextToken할 때 마다 개수 줄어드니까 예상치 못한 동작 일어날 수 있음.
+  - 특히, for 반복문에서 종료 조건, 부등호 
+
+
+## 그 외 학습 내용
 - 배열을 스트림으로: Arrays.stream(arr)
 - while: 반목문 탈출 조건 성립하는지 다시 한 번 확인하자.
 - main 클래스 밖에 새로운 클래스 선언 하려면 public 없이.
