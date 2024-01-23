@@ -13,17 +13,12 @@ public class Main {
         }
 
         int total = 0;
-        while (pq.size() != 1) {
+        while (pq.size() > 1) {
             int c = pq.poll() + pq.poll();
             total += c;
             pq.add(c);
-            if (pq.size() == 0) {
-                break;
-            }
         }
 
         System.out.println(total);
-        // 더하는 횟수는 정해져 있음. n-1번
-        // 그렇다면 중복해서 더해지는 걸 작게 유지할 필요가 있음.
     }
 }
