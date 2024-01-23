@@ -69,24 +69,7 @@
 
 ---
 
-### 정렬
-- 정렬의 종류
-  - 선택 정렬: 가장 작은 데이터를 선택해 차례대로 데이터 자리를 바꿈. 
-  - 삽입 정렬: 차례대로 데이터를 하나씩 적절한 위치에 삽입함.
-  - 퀵 정렬: 기준 데이터인 피벗을 설정하고 그에 따라 큰 데이터와 작은 데이터의 위치를 바꿈.
-  - 계수 정렬: 데이터의 크기를 토대로 데이터의 등장 횟수를 세며 정렬함.
- <img width="1233" alt="스크린샷 2024-01-09 오전 9 46 00" src="https://github.com/NewCodes7/coding-test-java/assets/123712285/13a20bf4-1a17-4c60-acbc-afce75e2e97e">
 
-- 정렬 알고리즘의 문제 유형
-  - 정렬 라이브러리로 풀 수 있는 문제
-  - 정렬 알고리즘의 원리에 대해서 물어보는 문제
-  - 더 빠른 정렬이 필요한 문제(계수 정렬 등의 다른 정렬 알고리즘 이용, 구조적인 개선)
-- 자바 정렬 라이브러리
-  - Arrays.sort(arr, fromIndex, toIndex): index 지정해서 정렬 가능함.(인덱스 생략 가능)
-  - Arrays.sort(arr, Comparator): 예시 Arrays.sort(arr, Comparator.comparingInt(o -> o[1])). 이를 통해 객체도 정렬 가능.
-  - Collections.sort(students, Comparator.comparingInt(Student::getScore)); // compareTo함수를 @Override하는 방법도 있음.
-  - 오름차순 정렬: Arrays.sort(arr)
-  - 내림차순 정렬: Arrays.sort(arr, Comparator.reverseOrder())
 
 ---
 
