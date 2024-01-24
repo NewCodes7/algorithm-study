@@ -11,14 +11,14 @@ public class Main {
 
         st = new StringTokenizer(br.readLine());
         int[] arr = new int[n];
+        int max = 0;
         for (int i = 0; i < n; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
+            max = Math.max(arr[i], max);
         }
-        Arrays.sort(arr);
 
         long start = 0;
-        long end = arr[arr.length - 1] - 1;
-        long result = start;
+        long end = max - 1;
 
         while (start <= end) {
             long mid = (start + end) / 2;
@@ -30,13 +30,12 @@ public class Main {
             }
 
             if (total >= m) {
-                result = mid;
                 start = mid + 1;
             } else {
                 end = mid - 1;
             }
         }
 
-        System.out.println(result);
+        System.out.println(end);
     }
 }
