@@ -4,7 +4,7 @@ import java.util.*;
 public class Main {
     private static int l, r, n;
     private static int cnt = -1;
-    private static boolean isUnited = true;
+    private static boolean isUnionPossible = true;
     private static boolean[][] visited;
     private static final int[] dx = {1, 0, -1, 0};
     private static final int[] dy = {0, 1, 0, -1};
@@ -25,11 +25,10 @@ public class Main {
             }
         }
 
-
-        while (isUnited) {
-            isUnited = false;
+        while (isUnionPossible) {
+            isUnionPossible = false; // 미리 false를 해 둠.
             visited = new boolean[n][n]; // 방문 초기화!!
-            map = open(map);
+            map = open(map); // 1회 시도
             cnt++;
         }
 
@@ -41,10 +40,11 @@ public class Main {
             for (int j = 0; j < n; j++) {
                 if (!visited[i][j]) {
                     List<int[]> union = new ArrayList<>();
-                    dfs(map, i, j, union);
-                    map = sum(map, union);
+
+                    dfs(map, i, j, union); // 연합
+                    map = sum(map, union); // 인구 이동 반영
                     if (union.size() != 1) {
-                        isUnited = true;
+                        isUnionPossible = true; // 한 번이라도 dfs 제대로 작동했다면, 더 해볼 여지가 있음.
                     }
                 }
             }
@@ -66,7 +66,7 @@ public class Main {
             }
 
             int differ = Math.abs(map[x][y] - map[nx][ny]);
-            if (!visited[nx][ny] && differ >= l && differ <= r) { // 이상!!
+            if (!visited[nx][ny] && differ >= l && differ <= r) { // 이상!! 이하!!
                 dfs(map, nx, ny, union);
             }
         }
@@ -75,15 +75,16 @@ public class Main {
     public static int[][] sum(int[][] map, List<int[]> union) {
         int sum = 0;
         int people = 0;
+
         for (int[] c : union) {
             people += c[2];
         }
+        people /= union.size();
 
         for (int[] c : union) {
-            map[c[0]][c[1]] = people / union.size();
+            map[c[0]][c[1]] = people;
         }
 
         return map;
     }
-
 }
