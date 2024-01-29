@@ -1,26 +1,18 @@
 import java.util.*;
 
-class Node { // 클래스 여기에 선언해도 되나? 어떤 게 바람직?
-    private int x;
-    private int y;
-    
-    public Node(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-    
-    public int getX() {
-        return x;
-    }
-    
-    public int getY() {
-        return y;
-    }
-}
+public class Solution {
+    private static class Node {
+        public final int x;
+        public final int y;
 
-class Solution {
-    private static int[] dx = {1, 0, -1, 0};
-    private static int[] dy = {0, 1, 0, -1};
+        private Node(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+    private static final int[] dx = {1, 0, -1, 0}; //이런 건 final로 상수 선언하기
+    private static final int[] dy = {0, 1, 0, -1};
     
     public static int bfs(int[][] maps, int x, int y) {
         Queue<Node> q = new LinkedList<>();
@@ -31,15 +23,15 @@ class Solution {
             Node current = q.poll();
             
             for(int i = 0; i < 4; i++) {
-                int nx = current.getX() + dx[i];
-                int ny = current.getY() + dy[i];
+                int nx = current.x + dx[i];
+                int ny = current.y + dy[i];
                 
                 if (nx < 0 || nx > maps.length - 1 || ny < 0 || ny > maps[0].length -1) {
                     continue;
                 }
                 
                 if (maps[nx][ny] == 1) {
-                    maps[nx][ny] = maps[current.getX()][current.getY()] + 1;
+                    maps[nx][ny] = maps[current.x][current.y] + 1;
                     q.offer(new Node(nx, ny));
                 }
             }
