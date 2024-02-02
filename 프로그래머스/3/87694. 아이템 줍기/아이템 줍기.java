@@ -33,8 +33,8 @@ class Solution {
         }
         
         Queue<int[]> q = new LinkedList<>();
-        q.offer(new int[] {characterX, characterY, 0});
-        map[characterX][characterY] = -1; // 방문처리
+        q.offer(new int[] {characterX, characterY, 0}); // 비용까지! 배열말고도 클래스 별도 선언 가능.
+        map[characterX][characterY] = 0; // 방문처리
 
         while(!q.isEmpty()) {
             int[] c = q.poll();
@@ -47,19 +47,16 @@ class Solution {
                 int nx = c[0] + dx[i];
                 int ny = c[1] + dy[i];
                 
-                if (nx < 0 || nx > 100 || ny < 0 || ny > 100) {
-                    continue;
-                }
+                if (nx < 0 || nx > 100 || ny < 0 || ny > 100) continue;
                 
                 if (map[nx][ny] == 1 || map[nx][ny] == 2) {
                     q.offer(new int[] {nx, ny, c[2] + 1});
-                    map[nx][ny] = -1;
+                    map[nx][ny] = 0;
                 }
             }
         }
         
-        // -1: 방문처리
-        // 0 : 기본 (지날 수 없는 길)
+        // 0 : 기본 (지날 수 없는 길) & 방문처리
         // 1 : 지날 수 있는 길
         // 2 : 코너
         // 3이상 : 직사각형 내부
