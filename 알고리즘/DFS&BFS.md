@@ -116,22 +116,30 @@ public static void dfs(int count) {
     }
 ```
 
-### [연산자 끼워넣기](백준/Silver/14888. 연산자 끼워넣기) x 2
+### [연산자 끼워넣기](백준/Silver/14888. 연산자 끼워넣기) x 2 (또 풀어봐도 좋다!)
 - 순열 알고리즘 이해해보자
-```java
-public static void permute(ArrayList<Integer> list, int start) {
-        if (start == list.size() - 1) {
-            System.out.println(list);
-            return;
-        }
-
-        for (int i = start; i < list.size(); i++) {
-            Collections.swap(list, start, i);
-            permute(list, start + 1);
-            Collections.swap(list, start, i); // backtrack
-        }
-    }
-```
+- ```java
+  public static void perm(int[] arr, int[] output, boolean[] visited, int depth, int n, int r) {
+      if (depth == r) {
+          print(output, r);
+          return;
+      }
+   
+      for (int i=0; i<n; i++) {
+          if (!visited[i]) {
+              visited[i] = true;
+              output[depth] = arr[i];
+              perm(arr, output, visited, depth + 1, n, r);       
+              output[depth] = 0; // 이 줄은 없어도 됨
+              visited[i] = false;;
+          }
+      }
+  }
+  ```
+- 원래 풀이는 순열 경우의 수 세팅해둔 뒤, 연산 처리함.
+  - 경우의 수 백트랙킹으로 처리하면서 연산할 수도 있음.
+  - op를 직접 순열처리하지 않아도 됨. 각각의 개수만 있다면.
+  - 최대 최소도 즉각 처리할 수 있음. list에 저장해두는 게 아니라. Math.min
 
 ### [타겟 넘버](프로그래머스/2/43165. 타겟 넘버)
 - **매개변수와 같은 이름으로 필드에 선언해두면 안 돼!!**
