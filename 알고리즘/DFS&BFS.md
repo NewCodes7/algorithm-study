@@ -116,7 +116,7 @@ public static void dfs(int count) {
     }
 ```
 
-### [연산자 끼워넣기](백준/Silver/14888. 연산자 끼워넣기)
+### [연산자 끼워넣기](백준/Silver/14888. 연산자 끼워넣기) x 2
 - 순열 알고리즘 이해해보자
 ```java
 public static void permute(ArrayList<Integer> list, int start) {
