@@ -1,6 +1,6 @@
-# [level 2] 자동차 종류 별 특정 옵션이 포함된 자동차 수 구하기 - 151137 
+# [level 1] 특정 옵션이 포함된 자동차 리스트 구하기 - 157343 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/151137) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/157343) 
 
 ### 성능 요약
 
@@ -8,7 +8,7 @@
 
 ### 구분
 
-코딩테스트 연습 > GROUP BY
+코딩테스트 연습 > String， Date
 
 ### 채점결과
 
@@ -16,7 +16,7 @@ Empty
 
 ### 제출 일자
 
-2024년 2월 4일 14:1:58
+2024년 2월 4일 15:27:24
 
 ### 문제 설명
 
@@ -56,7 +56,7 @@ Empty
 
 <h5>문제</h5>
 
-<p><code>CAR_RENTAL_COMPANY_CAR</code> 테이블에서 '통풍시트', '열선시트', '가죽시트' 중 하나 이상의 옵션이 포함된 자동차가 자동차 종류 별로 몇 대인지 출력하는 SQL문을 작성해주세요. 이때 자동차 수에 대한 컬럼명은 <code>CARS</code>로 지정하고, 결과는 자동차 종류를 기준으로 오름차순 정렬해주세요.</p>
+<p><code>CAR_RENTAL_COMPANY_CAR</code> 테이블에서 '네비게이션' 옵션이 포함된 자동차 리스트를 출력하는 SQL문을 작성해주세요. 결과는 자동차 ID를 기준으로 내림차순 정렬해주세요.</p>
 
 <hr>
 
@@ -87,40 +87,30 @@ Empty
 <td>3</td>
 <td>SUV</td>
 <td>22000</td>
-<td>주차감지센서,후방카메라</td>
-</tr>
-<tr>
-<td>4</td>
-<td>트럭</td>
-<td>35000</td>
-<td>주차감지센서,네비게이션,열선시트</td>
-</tr>
-<tr>
-<td>5</td>
-<td>SUV</td>
-<td>16000</td>
-<td>가죽시트,네비게이션,열선시트,후방카메라,주차감지센서</td>
+<td>주차감지센서,후방카메라,네비게이션</td>
 </tr>
 </tbody>
       </table>
-<p>'통풍시트', '열선시트', '가죽시트' 중 하나 이상의 옵션이 포함된 자동차는 자동차 ID가 1, 2, 4, 5인 자동차이고, 자동차 종류 별로 몇 대인지 구하고 자동차 종류를 기준으로 오름차순 정렬하면 다음과 같은 결과가 나와야 합니다.</p>
+<p>'네비게이션' 옵션이 포함된 자동차는 자동차 ID가 2, 3인 자동차이고, 자동차 ID를 기준으로 내림차순 정렬하면 다음과 같은 결과가 나와야 합니다.</p>
 <table class="table">
         <thead><tr>
+<th>CAR_ID</th>
 <th>CAR_TYPE</th>
-<th>CARS</th>
+<th>DAILY_FEE</th>
+<th>OPTIONS</th>
 </tr>
 </thead>
         <tbody><tr>
+<td>3</td>
 <td>SUV</td>
+<td>22000</td>
+<td>주차감지센서,후방카메라,네비게이션</td>
+</tr>
+<tr>
 <td>2</td>
-</tr>
-<tr>
-<td>세단</td>
-<td>1</td>
-</tr>
-<tr>
-<td>트럭</td>
-<td>1</td>
+<td>SUV</td>
+<td>14000</td>
+<td>스마트키,네비게이션,열선시트</td>
 </tr>
 </tbody>
       </table>
