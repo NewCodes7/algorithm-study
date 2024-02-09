@@ -1,4 +1,5 @@
 # MySQL
+<<<<<<< HEAD
 ### 피드백
 - AS 변수명 붙이는 느낌.
 - group by에서 조건 붙일 때는 where이 아니라 having
@@ -42,3 +43,9 @@
 - SUBSTRING(STR, STARTIDX, COUNT) -- MID와 동일
 - LEFT(STR, COUNT)
 - RIGHT(STR, COUNT)
+=======
+## MySQL이란?
+
+
+### 
+>>>>>>> parent of 94d0dad (2/8 문제 풀이 피드백)
