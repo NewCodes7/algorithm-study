@@ -13,7 +13,7 @@
   - boolean -> Boolean
   - long -> Long
 - 연산하다가 소수점 나올 수 있는 거 고려해라.. 반올림이랑 올림 뭐가 필요한지.. 특히 올림이라면.
-  - 아래 메서드는 double을 인자로 받고 double로 반환함.
+  - 🔥 아래 메서드는 double을 인자로 받고 double로 반환함.
   - Math.ceil(): 올림
   - Math.floor(): 내림
   - Math.round(): 반올림

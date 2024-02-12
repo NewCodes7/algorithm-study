@@ -10,8 +10,10 @@
     - SELECT절보다 WHERE 절이 먼저 실행되기 때문
   - select에서 연속적으로 별칭을 이용할 순 없는 듯.
 - WHERE COLUMN LIKE '' 특정 문자 있는지 확인
+- 문자열 합치기 CONCAT(STR1, STR2, ...)
 
 ### JOIN
+- ![Alt text](image.png)
 - TABLE1 JOIN TABLE2 ON 조건
 - LEFT OUTER JOIN
   - 첫 번째 테이블을 기준으로 두 번째 테이블을 조합
@@ -24,7 +26,7 @@
   ON STUDENT.PID = PROFESSOR.ID 
   WHERE GRADE = 1
   ```
-- LEFT OUTER JOIN
+- RIGHT OUTER JOIN
   - 두 번째 테이블을 기준으로 첫 번째 테이블을 조합
   - 두 번째 테이블이 모두 검색되어야 함.
   ```SQL
@@ -57,7 +59,7 @@
   END	
   ```
 
-### A BETWEEN B AND C (날짜 비교)
+### A BETWEEN B AND C (날짜, 숫자 등 비교)
 
 ### DATE
 - DATE_FORMAT(date, format)
@@ -79,3 +81,9 @@
 - ROUND(N) : 반올림
 - ROUND(N, 2) : 소수점 둘째자리 까지
   
+
+### LIMIT
+- 행 데이터 10개만 조회하기
+  - SELECT title, content, writer FROM board LIMIT 10;
+- 11번째 ~ 20번째 행 데이터 조회
+  - SELECT title, content, writer FROM board LIMIT 10, 10;
