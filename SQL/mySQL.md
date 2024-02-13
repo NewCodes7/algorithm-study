@@ -11,6 +11,14 @@
   - select에서 연속적으로 별칭을 이용할 순 없는 듯.
 - WHERE COLUMN LIKE '' 특정 문자 있는지 확인
 - 문자열 합치기 CONCAT(STR1, STR2, ...)
+- 특정 기간동안 대여 가능한 자동차들의 대여비용 구하기 <- 다시 풀기
+  - 어려운 건 설계가 필요하다! 펜 쓰는 것도 감안해두기
+- 레벨 4이상은 다시 풀어봐야 할 듯.
+- 합계 왠만하면 SUM 이용하자!
+- GROUP BY 두 개 할 수 있음. (저자 별 카테고리 별)
+- 문제 제목 읽고 유추하기
+- 중복된 거는 버리고 싶을 때!!: COUNT(DISTINCT(B.USER_ID)) (DISTINCT: 범주 조회)
+- 제시된 테스트 케이스 훑고 들어가야 할 듯. 그리고 디버깅할 때 적극적으로 보기.
 
 ### JOIN
 - ![Alt text](image.png)
@@ -37,12 +45,20 @@
   ON STUDENT.PID = PROFESSOR.ID 
   WHERE GRADE = 1
   ```
+- JOIN하면 기준이 같은 건데 한 쪽에 여러 개 있다면 여러 개 생성됨.
+- ON 기준은 최대한 고유한 것으로!! 
 
 ### IN
 - 집합 내부에 값이 존재하는지 여부를 확인합니다. (값 자체가 있는지 정확히 판단 %(x))
 - COLUM IN ('ABC') -> ture or false
 - 서브 쿼리 이용: COLUMN IN (SELECT ~~) 
 - (a.user, a.group) IN ('test2', 'B')
+- 특정 요소를 하나라도 뽑지 않아야 한다면 not in 활용
+- 서브쿼리에서 두 개의 열 담고 싶다면
+  - ```sql
+  - AND (CATEGORY, PRICE) IN (SELECT CATEGORY, MAX(PRICE)
+                    FROM FOOD_PRODUCT
+                    GROUP BY CATEGORY)```
 
 ### IF
 - IF(조건문, 참일 때 값, 거짓일 때 값)
@@ -60,6 +76,7 @@
   ```
 
 ### A BETWEEN B AND C (날짜, 숫자 등 비교)
+- 직접 비교를 애용하기 이상, 미만 등 반영하려면
 
 ### DATE
 - DATE_FORMAT(date, format)
@@ -87,3 +104,20 @@
   - SELECT title, content, writer FROM board LIMIT 10;
 - 11번째 ~ 20번째 행 데이터 조회
   - SELECT title, content, writer FROM board LIMIT 10, 10;
+- 가장 큰 걸 고르고 싶다면
+```sql
+(SELECT MEMBER_ID
+                   FROM REST_REVIEW
+                   GROUP BY MEMBER_ID
+                   ORDER BY COUNT(MEMBER_ID) DESC
+                   LIMIT 1)
+```
+
+
+### UNION
+- 테이블을 합치는 방법은 join만 있는 게 아니다!!
+- UNION: 중복제외
+- UNION ALL: 중복 허용
+- 특정 칼럼 null로 두고 싶다면 그저 Null as '칼럼명' 하면 됨.
+
+### 소수점 없애기
