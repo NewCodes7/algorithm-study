@@ -3,7 +3,7 @@ import java.util.Queue;
 
 class Solution {
 
-    static class Node {
+    private class Node {
         String next;
         int edge;
 
@@ -16,11 +16,7 @@ class Solution {
     public int solution(String begin, String target, String[] words) {
         int n = words.length, ans = 0;
 
-        // for (int i=0; i<n; i++)
-        //  if (words[i] != target && i == n-1) return 0;
-
         Queue<Node> q = new LinkedList<>();
-
 
         boolean[] visit = new boolean[n];
         q.add(new Node(begin, 0));
