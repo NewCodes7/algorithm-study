@@ -20,6 +20,15 @@
 - 중복된 거는 버리고 싶을 때!!: COUNT(DISTINCT(B.USER_ID)) (DISTINCT: 범주 조회)
 - 제시된 테스트 케이스 훑고 들어가야 할 듯. 그리고 디버깅할 때 적극적으로 보기.
 
+### [자동차 대여 기록 별 대여 금액 구하기]
+- 기존 풀린 풀이가 왜 틀렸는지는 이해가 되지 않지만, 위험한 건 알겠음.
+- 무지성 join은 위험하다!!! 서브쿼리, 유니온으로 해당 테이블 활용할 수도 있다!!
+- a between b and c: b같은 건 포함하고 c는 포함하지 않음. 그러나 아래 주의!
+  - BETWEEN '2012-01-22' AND '2012-01-23' 은
+  - BETWEEN '2012-01-22 00:00:00' AND '2012-01-23 00:00:00' 과 같은거
+- 더 효율적인 풀이로 시도하기 (https://kkw-da.tistory.com/entry/SQL-%EC%9E%90%EB%8F%99%EC%B0%A8-%EB%8C%80%EC%97%AC-%EA%B8%B0%EB%A1%9D-%EB%B3%84-%EB%8C%80%EC%97%AC-%EA%B8%88%EC%95%A1-%EA%B5%AC%ED%95%98%EA%B8%B0%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4MySQLLevel-4)
+  - from에서도 서브쿼리 활용할 수 있음.
+
 ### JOIN
 - ![Alt text](image.png)
 - TABLE1 JOIN TABLE2 ON 조건
