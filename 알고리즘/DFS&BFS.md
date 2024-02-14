@@ -72,7 +72,7 @@
   - 외부 클래스와의 결합 감소: static으로 선언한 내부 클래스는 외부 클래스의 멤버나 메서드에 직접적으로 접근할 수 없음.
 
 
-### [전력망을 둘로 나누기](프로그래머스/2/86971. 전력망을 둘로 나누기)
+### [전력망을 둘로 나누기](../프로그래머스/프로그래머스/2/86971. 전력망을 둘로 나누기) x2 (dfs 숙련도 높이고 싶다면 고고)
 - 🔥 인접 행렬 혹은 인접 리스트에 정보 저장할 때, **양방향 그래프라면** 양쪽에 추가해야 된다!! 하나만 추가하지마!!
   - 그리고 간선의 삭제, 복구도 양쪽에 해야한다!
 - 풀이 아이디어 있다고 해서 바로 들어가지마!! 아이디어 명확하더라도 구체화해라!
@@ -93,6 +93,47 @@
     - fruits.remove("apple");
 - 인접행렬, dfs로도 가능함. 어떤 것 써도 큰 상관없음.
 
+
+- 아 그래프 간선 삭제하는 작업 빠뜨림. 메서드까지는 생각해뒀는데. 
+  - 🔥 들여쓰기 설계할 때 생각나는 거 있으면 우선 모조리 적어둬야 함.
+    - 🔥 정갈하게 적어두는 건 마지막에 고치면 됨.
+- 🔥 많이 쉬워보이거나 설계에서 길이 뚜렷하게 보여도 차분해야 한다. 꾹꾹 눌러서!!
+- dfs, bfs 복습하자
+- ```java
+  // 인접 리스트 기준
+  public static void dfs(int x) {
+    visited[x] = true;
+
+    for (int i = 0; i < graph.get(i).size(); i++) {
+      int y = graph.get(x).get(i);
+      if (!visited[y]) {
+        dfs(y);
+      }
+    }
+  }
+
+    // BFS 함수 정의
+  public static void bfs(int start) {
+      Queue<Integer> q = new LinkedList<>();
+      q.offer(start);
+      // 현재 노드를 방문 처리
+      visited[start] = true;
+      // 큐가 빌 때까지 반복
+      while(!q.isEmpty()) {
+          // 큐에서 하나의 원소를 뽑아 출력
+          int x = q.poll();
+          System.out.print(x + " ");
+          // 해당 원소와 연결된, 아직 방문하지 않은 원소들을 큐에 삽입
+          for(int i = 0; i < graph.get(x).size(); i++) {
+              int y = graph.get(x).get(i);
+              if(!visited[y]) {
+                  q.offer(y);
+                  visited[y] = true;
+              }
+          }
+      }
+  }
+- ```
 
 
 
