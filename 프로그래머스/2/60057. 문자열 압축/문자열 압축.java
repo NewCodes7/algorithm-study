@@ -1,51 +1,61 @@
-import java.util.*;
-
 class Solution {
-    private List<String> split(String source, int length) {
-        List<String> tokens = new ArrayList<>();
-        for (int startIndex = 0; startIndex < source.length(); startIndex += length) {
-            int endIndex = startIndex + length;
-            if (endIndex > source.length()) endIndex = source.length(); // 인덱스 넘어가는 것 if문 통해 방지
-            tokens.add(source.substring(startIndex, endIndex));
-        }
-        return tokens;
-    }
-    
-    private int compress(String source, int length) {
-        StringBuilder sb = new StringBuilder();
-        
-        String last = "";
-        int count = 0;
-        for (String token : split(source, length)) {
-            if (token.equals(last)) {
-                count++;
-            } else {
-                if (count > 1) sb.append(count);
-                sb.append(last);
-                last = token;
-                count = 1;
-            }
-        }
-        if (count > 1) sb.append(count); //마지막까지 같을 때 
-        sb.append(last);
-
-        return sb.length();
-    }
-    
     public int solution(String s) {
-        int min = Integer.MAX_VALUE; // 최댓갑 설정
-        for (int length = 1; length <= s.length(); length++) {
-            int compressed = compress(s, length);
-            if (compressed < min) {
-                min = compressed;
+        int answer = 1000;
+        
+        for (int i = 1; i <= s.length() / 2; i++) { // 소수점 버려도 무방
+            StringBuilder sb = new StringBuilder();
+            // String before = s.substring(0, i);
+            int j = 0;
+            // if (!before.equals(s.substring(j, j+i))) {
+            //     sb.append(before);
+            // }
+            
+            // before가 아니라 after와 비교
+            int cnt = 1;
+            
+            while(true) {
+                String c = s.substring(j, j+i);
+                if (j+i+i > s.length()) { // -1이 아님!!
+                    if (cnt != 1) {
+                        sb.append(cnt);
+                        cnt = 1;
+                    }
+                    sb.append(c);
+                    sb.append(s.substring(j+i, s.length()));
+                    break;
+                }
+                
+                String after = s.substring(j+i, j+i+i);
+                
+                if (c.equals(after)) {
+                    cnt++;
+                } else {
+                    if (cnt != 1) {
+                        sb.append(cnt);
+                        cnt = 1;
+                    }
+                    sb.append(c);
+                }
+                
+                j += i;
             }
+            answer = Math.min(answer, sb.length());
         }
-        return min;
+        
+        if (s.length() == 1) {
+            return 1;
+        }
+        
+        return answer;
     }
 }
-// for로 무식하게 돌기보다는 우선 split하는 게 좋음. 왜냐하면, for 깔끔하게 떨어지지 않으니. 
-// 아 코테 진짜 많이 풀어봐야겠다..
 
-// 메서드 분리의 필요성.. 리팩토링. 중간중간 가독성
-// 문자열 비교 == 아니다! equals
-// subString x
+/*
+앞에서부터 정해진 개수만큼 자르기 - 완전탐색 ?
+
+반복문 1 ~ s.length/2, substring
+    반복문 - 정해진 개수만큼 자르면서 중복되는지 확인 (그 다음 거랑!!)
+        중복되면 몇개인지 세고 저장하기 StringBuilder
+        중복 아니라면 저장하고 넘기기
+    max 확인 후 저장
+*/
