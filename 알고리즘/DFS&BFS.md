@@ -285,3 +285,11 @@ public static void dfs(int count) {
       s[7] = 'X';
       s = Arrays.toString(c);
   - ```
+
+### [단지번호붙이기](../백준/Silver I/2667. 단지번호붙이기)
+- 일반적인 bfs 방문처리는 두 개의 줄에 있음!! start에서 한 번, offer할 때 한 번
+- chat를 int에 바로 저정하면 아스키코드로 된다!! 해결: Integer.parseInt(String.valueOf(c.charAt(j)))
+- 내림차순 정렬 정리하기 (학습)
+  - 리스트: Collections.sort(words, Collections.reverseOrder()); // String이든 Integer이든 상관x
+  - 배열: Integer[] 이런건 위처럼 하면 되지만, 원시형 배열은 내장 메서드가 없음. 
+    - 대표적 방법: arr -> list
