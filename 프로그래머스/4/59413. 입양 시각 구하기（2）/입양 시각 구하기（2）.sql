@@ -1,11 +1,6 @@
 SET @HOUR = -1;
-SELECT (@HOUR := @HOUR+1) AS HOUR,
-    (SELECT COUNT(HOUR(DATETIME))
-    FROM ANIMAL_OUTS
-    WHERE HOUR(DATETIME)=@HOUR) AS COUNT
+SELECT (@HOUR := @HOUR+1) AS HOUR, (SELECT COUNT(HOUR(DATETIME))
+                                    FROM ANIMAL_OUTS
+                                    WHERE HOUR(DATETIME)=@HOUR) AS COUNT
 FROM ANIMAL_OUTS
-WHERE @HOUR < 23;
-
-
--- 제시되지 않은 값을 나열해야 한다.
-    -- 뭘 이용할 수 있을까? if, when
+WHERE @HOUR < 23
