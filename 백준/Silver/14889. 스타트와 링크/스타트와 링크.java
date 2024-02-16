@@ -1,71 +1,80 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
 public class Main {
-    private static int N;
-    private static int[][] arr;
-    private static int[] pair;
-    private static int[] pair2;
-    private static boolean[] chk;
-
-    private static List<Integer> score = new ArrayList<>();
-
-    public static void back(int idx, int i) {
-        if (idx == N/2) {
-            int startTeam = 0;
-            int linkTeam = 0;
-
-            List<Integer> list = new ArrayList<>();
-            for (int h = 0; h < N; h++) {
-                if (!chk[h]) {
-                    list.add(h);
-                }
-            }
-            pair2 = list.stream().mapToInt(Integer::intValue).toArray();
-
-            for (int k = 0; k < N/2; k++) {
-                for (int j = 0; j < N/2; j++) {
-                    startTeam += arr[pair[k]][pair[j]] + arr[pair[j]][pair[k]];
-                    linkTeam += arr[pair2[k]][pair2[j]] + arr[pair2[j]][pair2[k]];
-                }
-            }
-            score.add(Math.abs(startTeam - linkTeam));
-            return;
-        }
-
-        for (i = i; i < N; i++) { // 이대로 더해버리면 중복됨. 선수 경우의 수만 고른다 생각해야 함.
-            // swap을 한다면? 애초에 설계를 잘 못함. ㄴㄴ 경우의 수 더많아짐.
-            chk[i] = true;
-            pair[idx] = i;
-            back(idx + 1, i + 1);
-            chk[i] = false;
-        }
-    }
-
+    private static int n;
+    private static int answer = Integer.MAX_VALUE;
+    private static int[][] graph;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
         StringTokenizer st = new StringTokenizer(br.readLine());
+        n = Integer.parseInt(st.nextToken());
+        graph = new int[n][n];
 
-        N = Integer.parseInt(st.nextToken());
-        arr = new int[N][N];
-        pair = new int[N/2];
-        pair2 = new int[N/2];
-        chk = new boolean[N];
-
-        for (int i = 0; i < N; i++) {
+        for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
-            for (int j = 0; j < N; j++) {
-                arr[i][j] = Integer.parseInt(st.nextToken());
+            for (int j = 0; j < n; j++) {
+                graph[i][j] = Integer.parseInt(st.nextToken());
             }
         }
 
-        back(0, 0);
-        
-        System.out.println(Collections.min(score) / 2);
+        List<Integer> list = new ArrayList<>();
+        list.add(0);
+        back(0, list, 0);
 
-        // 입력 읽기
-        // n개의 배열로 뭉쳐도 됨. ㄴㄴ 1, 3, 6 세 명이 같은 팀이면 3개의 값 필요. 4명이면 6개의 값
-        // 1, 2, 99, 100 일단 ㄱ
+        System.out.println(answer);
     }
+
+    public static void back(int depth, List<Integer> list, int idx) {
+        if (depth == n/2 - 1) {
+            answer = Math.min(answer, sum(list));
+            return;
+        }
+
+        for (int i = idx+1; i < n; i++) {
+            list.add(i);
+            back(depth+1, list, i);
+            list.remove(list.size()-1);
+        }
+    }
+    public static int sum(List<Integer> list) {
+        int c = 0;
+        int c2 = 0;
+        List<Integer> list2 = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            if (!list.contains(i)) {
+                list2.add(i);
+            }
+        }
+
+        for (int i = 0; i < list.size()-1; i++) {
+            for (int j = i+1; j < list.size(); j++) {
+                c += graph[list.get(i)][list.get(j)] + graph[list.get(j)][list.get(i)];
+            }
+        }
+        for (int i = 0; i < list2.size()-1; i++) {
+            for (int j = i+1; j < list2.size(); j++) {
+                c2 += graph[list2.get(i)][list2.get(j)] + graph[list2.get(j)][list2.get(i)];
+            }
+        }
+
+        return Math.abs(c - c2);
+    }
+
+
 }
+
+/*
+총합 더해두기
+조합! - N명 중에서 N/2명 뽑기
+더하기!
+
+순열 - visited, 종료조건 r개수
+
+4 -> 4c2 6 -> 3 3c2
+6 -> 6c3 20 -> 10 5c2
+
+머리가 안 돌아ㅏㄱ.
+ */
