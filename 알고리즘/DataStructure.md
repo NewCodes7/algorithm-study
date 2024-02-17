@@ -13,6 +13,26 @@
 - 의미: 우선순위가 가장 높은 데이터를 가장 먼제 삭제하는 자료구조
 - 조건: 우선순위 큐에 저장할 객체는 Comparable Interface를 구현해야 함. compareTo를 오버라이딩하여 우선순위 조건을 리턴하면 됨.
 - 내부: 해당 큐를 구현하기 위해 여러 자료구조를 사용하는데 그 중에 힙을 사용함.
+- 원리
+  - 이진트리를 이용함.
+  - 삽입하고 나서, 부모보다 작다면 교체함.
+  - 추출하고 나서, 마지막 원소와 자리 바꾼 뒤, 교체 진행함.
+- 선언
+  - PriorityQueue<type> pq = new PriorityQueue<>(); (우선순위가 낮은 숫자 순)
+  - PriorityQueue<type> priorityQueue = new PriorityQueue<>(Comparator.reverseOrder());
+  - ```java
+      absPriorityQueue = new PriorityQueue<>(new Comparator<Integer>() {
+      @Override
+      public int compare(Integer o1, Integer o2) {
+          if (Math.abs(o1) == Math.abs(o2)) { //절대값이 같다면
+              return o1 - o2; // 값 자체로 비교해서 오름차순
+          } else {
+              return Math.abs(o1) - Math.abs(o2); // 아니면 절대값으로 비교해서 오름차순
+          }
+      }
+      }); 
+  - ```
+
 
 ### 힙(Heap)
 - 최소힙: 최솟값이 우선순위인 큐
