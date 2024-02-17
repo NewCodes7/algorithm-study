@@ -293,3 +293,13 @@ public static void dfs(int count) {
   - 리스트: Collections.sort(words, Collections.reverseOrder()); // String이든 Integer이든 상관x
   - 배열: Integer[] 이런건 위처럼 하면 되지만, 원시형 배열은 내장 메서드가 없음. 
     - 대표적 방법: arr -> list
+
+
+### [아기 상어](../백준/Gold/16236. 아기 상어)
+- visited 순서 중요하다..! 민감하게 살펴보자.
+  - 백트랙킹(dfs)에서는 visited 복원해야 한다.
+- 🔥 dfs 시간 초과 걸림. 해당 문제가 dfs 풀이가 없는 이유가 있었음.
+  - 🔥 🔥 최단 거리 찾을 때는 bfs!!! 잊지말자. 
+  - Q에 삽입할 때 class가 아니라 int[]와 같은 배열로 해도 되니까 bfs 부담없이 시도하자.
+- 은근 신경 쓸 게 많은 문제였음. 
+  - 이럴 때는 완벽히 설계를 하는 것보다는 어느 정도 됐으면 하면서 잠깐씩 다시 메타적으로 설계하는 게 좋은 듯.
