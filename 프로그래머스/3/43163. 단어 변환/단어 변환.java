@@ -1,45 +1,70 @@
 import java.util.*;
 
 class Solution {
+    private static boolean[] visited;
+        
+    private static class Node {
+        String word;
+        int cost;
+        
+        Node(String word, int cost) {
+            this.word = word;
+            this.cost = cost;
+        }
+    }
+    
     public int solution(String begin, String target, String[] words) {
-        int[] vst = new int[words.length];
-        Queue<Integer> queue = new LinkedList<>();
-
-        for ( int i = 0; i < words.length; i++ ) {
-            if ( vst[i] == 0 && diff(begin, words[i]) ) {
-                queue.offer(i);
-                vst[i] = 1;
+        visited = new boolean[words.length];
+        return bfs(begin, target, words);
+    }
+    
+    public static int bfs(String begin, String target, String[] words) {
+        Queue<Node> q = new LinkedList<>();
+        q.offer(new Node(begin, 0));
+        
+        while (!q.isEmpty()) {
+            Node c = q.poll();
+            if (c.word.equals(target)) return c.cost;
+            
+            for (int i = 0; i < words.length; i++) {
+                if (visited[i]) continue;
+                if (check(c.word, words[i])) {
+                    q.offer(new Node(words[i], c.cost + 1));
+                    visited[i] = true;
+                } 
             }
         }
-
-        while ( !queue.isEmpty() ) {
-            int curIdx = queue.poll();
-            String curStr = words[curIdx];
-
-            if ( curStr.equals(target) )
-                return vst[curIdx];
-
-            for ( int j = 0; j < words.length; j++ ) {
-                if ( vst[j] == 0 && diff( curStr, words[j] ) ) {
-                    queue.offer(j);
-                    vst[j] = vst[curIdx] + 1;
-                }
-            }
-        }
-
+        
         return 0;
     }
-
-    private boolean diff(String str1, String str2) {
-        int diff = 0;
-
-        for ( int i = 0; i < str1.length(); i++ ) {
-            if ( str1.charAt(i) != str2.charAt(i) )
-                diff++;
-            if ( diff > 1 )
-                return false;
+    
+    public static boolean check(String s, String c) {
+        char[] arr1 = s.toCharArray();
+        char[] arr2 = c.toCharArray();
+        
+        if (arr1.length != arr2.length) {
+            return false;
         }
-
-        return diff==1;
+        
+        int cnt = 0;
+        for (int i = 0; i < arr1.length; i++) {
+            if (arr1[i] != arr2[i]) {
+                cnt++;
+                if (cnt > 1) return false;
+            }
+        }
+        
+        if (cnt == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
+
+// bfs로 고고 (이전에는 dfs로 품.)
+
+/*
+check 함수 두 단어 제공 
+
+*/
