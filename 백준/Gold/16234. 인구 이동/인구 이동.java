@@ -2,12 +2,12 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    private static int l, r, n;
-    private static int cnt = -1;
-    private static boolean isUnionPossible = true;
+    private static int n, l, r;
+    private static int[][] map;
+    private static List<int[]> union = new ArrayList<>();
     private static boolean[][] visited;
-    private static final int[] dx = {1, 0, -1, 0};
-    private static final int[] dy = {0, 1, 0, -1};
+    private static int[] dx = {1, 0, -1, 0};
+    private static int[] dy = {0, 1, 0, -1};
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -17,7 +17,8 @@ public class Main {
         l = Integer.parseInt(st.nextToken());
         r = Integer.parseInt(st.nextToken());
 
-        int[][] map = new int[n][n];
+        map = new int[n][n];
+        visited = new boolean[n][n];
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
             for (int j = 0; j < n; j++) {
@@ -25,66 +26,68 @@ public class Main {
             }
         }
 
-        while (isUnionPossible) {
-            isUnionPossible = false; // 미리 false를 해 둠.
-            visited = new boolean[n][n]; // 방문 초기화!!
-            map = open(map); // 1회 시도
+        int cnt = -1;
+        boolean isGoing = true;
+        while (isGoing) {
+            isGoing = false;
+
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (!visited[i][j]) {
+                        int unionCnt = move(new int[] {i, j});
+                        if (unionCnt != 1) {
+                            isGoing = true;
+                        }
+                        union.clear();
+                    }
+                }
+            }
+
             cnt++;
+            visited = new boolean[n][n];
         }
 
+        //했던 곳을 다시? 아 한 번의 시행에서 여러 연합군이 있을 수 있음.
         System.out.println(cnt);
     }
 
-    public static int[][] open(int[][] map) {
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                if (!visited[i][j]) {
-                    List<int[]> union = new ArrayList<>();
+    public static int move(int[] start) {
+        Queue<int[]> q = new LinkedList<>();
+        q.offer(start);
+        visited[start[0]][start[1]] = true; // false일 때로 인자 넘겨야함.
 
-                    dfs(map, i, j, union); // 연합
-                    map = sum(map, union); // 인구 이동 반영
-                    if (union.size() != 1) {
-                        isUnionPossible = true; // 한 번이라도 dfs 제대로 작동했다면, 더 해볼 여지가 있음.
-                    }
+        int total = map[start[0]][start[1]];
+        int cnt = 1;
+        union.add(new int[] {start[0], start[1]});
+
+        while(!q.isEmpty()) {
+            int[] c = q.poll();
+
+            for (int i = 0; i < 4; i++) {
+                int nx = c[0] + dx[i];
+                int ny = c[1] + dy[i];
+                if (nx < 0 || nx > n-1 || ny < 0 || ny > n-1) continue;
+                if (visited[nx][ny]) continue;
+
+                int differ = Math.abs(map[c[0]][c[1]] - map[nx][ny]);
+                if (differ >= l && differ <= r) {
+                    visited[nx][ny] = true;
+                    q.offer(new int[] {nx, ny});
+                    total += map[nx][ny];
+                    cnt++;
+                    union.add(new int[] {nx, ny});
                 }
             }
         }
 
-        return map;
-    }
-
-    public static void dfs(int[][] map, int x, int y, List<int[]> union) {
-        visited[x][y] = true;
-        union.add(new int[] {x, y, map[x][y]});
-
-        for (int i = 0; i < 4; i++) {
-            int nx = x + dx[i];
-            int ny = y + dy[i];
-
-            if (nx < 0 || nx > map.length - 1 || ny < 0 || ny > map.length - 1) {
-                continue;
-            }
-
-            int differ = Math.abs(map[x][y] - map[nx][ny]);
-            if (!visited[nx][ny] && differ >= l && differ <= r) { // 이상!! 이하!!
-                dfs(map, nx, ny, union);
+        // 평균내기
+        if (cnt != 1) { // 이거 빠뜨림 ㅠㅠ
+            for (int i = 0; i < union.size(); i++) {
+                int avg = total / cnt;
+                map[union.get(i)[0]][union.get(i)[1]] = avg;
             }
         }
-    }
 
-    public static int[][] sum(int[][] map, List<int[]> union) {
-        int sum = 0;
-        int people = 0;
-
-        for (int[] c : union) {
-            people += c[2];
-        }
-        people /= union.size();
-
-        for (int[] c : union) {
-            map[c[0]][c[1]] = people;
-        }
-
-        return map;
+        return cnt;
     }
 }
