@@ -10,7 +10,7 @@
     - SELECT절보다 WHERE 절이 먼저 실행되기 때문
   - select에서 연속적으로 별칭을 이용할 순 없는 듯.
 - WHERE COLUMN LIKE '' 특정 문자 있는지 확인
-- 🔥 문자열 합치기 CONCAT(STR1, STR2, ...)
+- 🔥 문자열 합치기 CONCAT(STR1, STR2, ...) 조회수가 가장 많은 중고거래 게시판의 첨부파일 조회하기
 - 🔥 어려운 건 설계가 필요하다! 펜 쓰는 것도 감안해두기
 - 🔥 레벨 4이상은 다시 풀어봐야 할 듯.
 - 합계 왠만하면 SUM 이용하자!
@@ -37,6 +37,11 @@
 ### [대여 횟수가 많은 자동차들의 월별 대여 횟수 구하기]
 - 🔥 WHERE '2022-08-01' <= START_DATE <= '2022-10-31' // 이런식으로 비교하는 건 안돼!!
 
+### [자동차 대여 기록에서 대여중 / 대여 가능 여부 구분하기]
+- 두 가지 풀이가 가능함. union, when
+  - when으로 풀어보기.
+  - 🔥 when절에서도 서브쿼리 쓸 수 있다!! IN 이용해서
+
 ### WITH
 - 임시 테이블을 지정함으로써 반복적인 수행을 가능하게 해줌.
 - 구조
@@ -48,6 +53,20 @@
 )
 
 -```
+
+
+### DATE
+- DATEDIFF(날짜1, 날짜2);
+- TIMESTAMPDIFF(단위, 날짜1, 날짜2);
+- SECOND : 초
+  MINUTE : 분
+  HOUR : 시
+  DAY : 일
+  WEEK : 주
+  MONTH : 월
+  QUARTER : 분기
+  YEAR : 연
+
 
 
 ### 🔥 SET
@@ -98,7 +117,7 @@
 - 서브 쿼리 이용: COLUMN IN (SELECT ~~) 
 - 🔥 두개활용가능: (a.user, a.group) IN ('test2', 'B') (식품분류별 가장 비싼 식품의 정보 조회하기)
 - 🔥 특정 요소를 하나라도 뽑지 않아야 한다면 not in 활용 (특정 기간동안 대여 가능한 자동차들의 대여비용 구하기) - 한 번 더 풀기
-- 🔥 서브쿼리에서 두 개의 열 담고 싶다면
+- 🔥 서브쿼리에서 두 개의 열 담고 싶다면 (AND 옆에 칼럼 괄호 감싸는 거 잊지 말기!!)
   - ```sql
   - AND (CATEGORY, PRICE) IN (SELECT CATEGORY, MAX(PRICE)
                     FROM FOOD_PRODUCT
@@ -127,7 +146,7 @@
 - 🔥 DATEDIFF(D1, D2) -- D1 - D2를 반환함. 몇일동안 이루어졌는지 알고싶으면 +1해야함.
 
 ### 문자열 가져오기
-- 🔥 SUBSTRING(STR, STARTIDX, COUNT) -- MID와 동일
+- 🔥 SUBSTRING(STR, STARTIDX, COUNT) -- MID와 동일 (마지막 파라미터 인덱스가 아니라 개수다!!)
 - 🔥 LEFT(STR, COUNT)
 - 🔥 RIGHT(STR, COUNT)
 
