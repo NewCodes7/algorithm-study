@@ -2,59 +2,63 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    private static int[] numbers;
-    private static int[] op;
-    private static List<Integer> answer = new ArrayList<>();
+    private static int n;
+    private static int min = Integer.MAX_VALUE;
+    private static int max = -Integer.MAX_VALUE; // 여기서...!! 음수 나올 수도 있어!!!
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int n = Integer.parseInt(br.readLine());
-
         StringTokenizer st = new StringTokenizer(br.readLine());
-        numbers = new int[n];
+        n = Integer.parseInt(st.nextToken());
+
+        st = new StringTokenizer(br.readLine());
+        int[] nums = new int[n];
         for (int i = 0; i < n; i++) {
-            numbers[i] = Integer.parseInt(st.nextToken());
+            nums[i] = Integer.parseInt(st.nextToken());
         }
 
         st = new StringTokenizer(br.readLine());
-        op = new int[4];
+        int[] arr = new int[4];
         for (int i = 0; i < 4; i++) {
-            op[i] = Integer.parseInt(st.nextToken());
+            arr[i] = Integer.parseInt(st.nextToken());
         }
 
-        back(numbers[0], 0);
+        back(nums, arr, 1, nums[0]);
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(Collections.max(answer)).append("\n").append(Collections.min(answer));
-        System.out.println(sb.toString());
+        System.out.println(max);
+        System.out.println(min);
     }
 
-    public static void back(int sum, int depth) {
-        if (depth == numbers.length - 1) {
-            answer.add(sum);
+    public static void back(int[] nums, int[] arr, int depth, int sum) {
+        if (depth == n) {
+//            System.out.println(Arrays.toString(arr));
+            min = Math.min(sum, min);
+            max = Math.max(sum, max);
+
             return;
         }
 
-        if (op[0] > 0) {
-            op[0]--;
-            back(sum + numbers[depth + 1], depth + 1);
-            op[0]++;
-        }
-        if (op[1] > 0) {
-            op[1]--;
-            back(sum - numbers[depth + 1], depth + 1);
-            op[1]++;
-        }
-        if (op[2] > 0) {
-            op[2]--;
-            back(sum * numbers[depth + 1], depth + 1);
-            op[2]++;
-        }
-        if (op[3] > 0) {
-            op[3]--;
-            back(sum / numbers[depth + 1], depth + 1);
-            op[3]++;
+        for (int i = 0; i < 4; i++) {
+            if (arr[i] == 0) continue;
+            int original = sum;
+            arr[i]--;
+            if (i == 0) sum += nums[depth];
+            if (i == 1) sum -= nums[depth];
+            if (i == 2) sum *= nums[depth];
+            if (i == 3) sum /= nums[depth];
+
+            back(nums, arr, depth+1, sum);
+
+            sum = original;
+            arr[i]++;
         }
     }
 }
+
+/*
+그때 했던 것처럼 배열 각각을 기준으로 해서 백트랙
+
+입력 받기
+
+ */
