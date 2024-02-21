@@ -186,7 +186,8 @@ public static void dfs(int count) {
     }
 ```
 
-### [연산자 끼워넣기](백준/Silver/14888. 연산자 끼워넣기) x 2 (또 풀어봐도 좋다!)
+
+### [연산자 끼워넣기](백준/Silver/14888. 연산자 끼워넣기) x 3 (또 풀어봐도 좋다!)
 - 순열 알고리즘 이해해보자
 - ```java
   public static void perm(int[] arr, int[] output, boolean[] visited, int depth, int n, int r) {
@@ -211,6 +212,11 @@ public static void dfs(int count) {
   - op를 직접 순열처리하지 않아도 됨. 각각의 개수만 있다면.
   - 최대 최소도 즉각 처리할 수 있음. list에 저장해두는 게 아니라. Math.min
 - 백트랙킹을 이와 같이도 여러개 메서드 둘 수 있음. 사실 for문을 풀어헤친 것임.
+
+- 🔥 음수가 나올 수 있다면, 최솟값 선언해둘 때 Integer.MAX_VALUE가 아니라 -Integer.MAX_VALUE라 해야 한다!!!
+  - 🔥 아니다. Integer.MIN_VALUE도 있다!!!!
+  - 경향성이 대부분 맞았으나 갑자기 틀렸을 때, 예외적인 케이스 생각한 점 굿
+
 
 ### [타겟 넘버](프로그래머스/2/43165. 타겟 넘버) x 2 (전처리하지 않고 풀어보기)
 - **매개변수와 같은 이름으로 필드에 선언해두면 안 돼!!**
