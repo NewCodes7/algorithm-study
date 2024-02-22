@@ -7,7 +7,6 @@ class Solution {
     private static List<String> temp = new ArrayList<>();
     
     public String[] solution(String[] orders, int[] course) {
-        
         for (int i = 0; i < course.length; i++) {
             for (int j = 0; j < orders.length; j++) {
                 if (orders[j].length() < course[i]) {
@@ -16,27 +15,19 @@ class Solution {
                 
                 comb(orders[j].split(""), course[i], 0, 0, new String[course[i]]);
             }
+            
             // 바깥에 있어야 함
             if (!temp.isEmpty()) {
                 for (String s : temp) {
                     list.add(s);
                 }
             }
-
             temp.clear();
             max = 0;
         }
         
-                // comb(orders[0].split(""), course[0], 0, 0, new String[course[0]]);
-                // comb(orders[1].split(""), course[0], 0, 0, new String[course[0]]);
-                
-                if (!temp.isEmpty()) {
-                    for (String s : temp) {
-                        list.add(s);
-                    }
-                }
-        
         Collections.sort(list);
+        
         String[] answer = new String[list.size()];
         for (int i = 0; i < list.size(); i++) {
             answer[i] = list.get(i);
@@ -50,6 +41,7 @@ class Solution {
             String[] arr2 = arr.clone();
             Arrays.sort(arr2); // 아.. 여기때문에!!! 순서가 바뀜...!
             String s = toString(arr2);
+            
             if (!map.containsKey(s)) {
                 map.put(s, 1);
             } else {
@@ -60,6 +52,7 @@ class Solution {
                     temp.clear();
                     temp.add(s);
                 }
+                
                 if (cnt == max) {
                     if (!temp.contains(s)) { // 효율 향상 가능
                         temp.add(s);
@@ -68,22 +61,13 @@ class Solution {
                 
                 map.put(s, cnt+1);
             }
-            
-            // System.out.println(map);
-            
-            // System.out.println(temp);
-            // System.out.println(s);
-            
-            // System.out.println(Arrays.toString(arr)); // 왜 조합이 중복돼지?
+
             return;
         }
         
         for (int i = idx; i < order.length; i++) {
             arr[depth] = order[i];
-            // sb.append(order[i]); // idx가 아니라 i!!
-            
             comb(order, count, depth+1, i+1, arr);
-            
         }
     }
     
@@ -95,6 +79,7 @@ class Solution {
         
         return sb.toString();
     }
+    
 }
 
 
