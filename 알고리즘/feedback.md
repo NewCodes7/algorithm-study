@@ -20,7 +20,3 @@
   ```java
   int num = (int) Math.ceil((double) 10.1);
   ```
-- 깊은 복사
-  - Arrays.copyOf()
-  - List.copyOf()
-  - Collections.copy()

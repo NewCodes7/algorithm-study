@@ -120,7 +120,7 @@
   public static void dfs(int x) {
     visited[x] = true;
 
-    for (int i = 0; i < graph.get(i).size(); i++) {
+    for (int i = 0; i < graph.get(x).size(); i++) {
       int y = graph.get(x).get(i);
       if (!visited[y]) {
         dfs(y);
@@ -142,7 +142,7 @@
           // 해당 원소와 연결된, 아직 방문하지 않은 원소들을 큐에 삽입
           for(int i = 0; i < graph.get(x).size(); i++) {
               int y = graph.get(x).get(i);
-              if(!visited[y]) {
+              if (!visited[y]) {
                   q.offer(y);
                   visited[y] = true;
               }
@@ -317,7 +317,7 @@ public static void dfs(int count) {
 - tap 설계에서 꼭 하나의 루프로 표현하려고 하지말자. 복잡하면 나누자. 
 - 리팩토링에서 일단 방법이 있다면 비효율적인 것 같아도 적극적으로 시도해보기!! 익숙한거면 good
 - charAt은 읽기만 가능함.
-  - 문자열 특정 위치 문자 바꾸려면? -> sb 이용! setCharAt!!!! 
+  - 🔥 문자열 특정 위치 문자 바꾸려면? -> sb 이용! setCharAt!!!! 
   - ```java
       // StringBuilder를 사용하여 문자열을 수정할 수 있도록 변환
       StringBuilder sb = new StringBuilder(myString);
@@ -328,12 +328,7 @@ public static void dfs(int count) {
       // 변경된 문자열을 출력
       System.out.println(sb.toString()); 
   - ```
-  - Arrays.toString()을 이용하는 방법도 있다!! 프린트문에서만 쓰이는 게 아니야!
-  - ```java
-      String[] c = s.split("");
-      s[7] = 'X';
-      s = Arrays.toString(c);
-  - ```
+
 
 ### [단지번호붙이기](../백준/Silver I/2667. 단지번호붙이기)
 - 일반적인 bfs 방문처리는 두 개의 줄에 있음!! start에서 한 번, offer할 때 한 번
