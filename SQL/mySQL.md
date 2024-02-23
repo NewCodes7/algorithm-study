@@ -23,7 +23,7 @@
 - 🔥 칼럼 내 값이 중복 있는지 점검하는 습관 좋다!! 중복에 민감해야해!!!!! 문제 처음 읽을 때! 이래서 설명도 읽어야 해(주문량이 많은 아이스크림)
 - 🔥 DISTINCT birthcity 이렇게도 사용가능함
   - DISTINCT birthyear, birthMonth, birthday: 이건 세 개의 값이 모두 같은 행들만 중복으로 간주함. 1998,09,12 1998,09,12
-- 🔥🔥 중복, 코드 재사용성 연연하지 말자. 시간 복잡도가 있는 것도 아니니까. 코드 길어져도 초조해하지 말고 '정확성'에 초점 두자. 
+- 🔥🔥 코드 중복, 코드 재사용성 연연하지 말자. 시간 복잡도가 있는 것도 아니니까. 코드 길어져도 초조해하지 말고 '정확성'에 초점 두자. 
 
 ```SQL
 SELECT *
@@ -59,26 +59,25 @@ FROM (SELECT PRODUCT_ID, FLOOR(PRICE/10000)*10000 AS PRICE
 - 임시 테이블을 지정함으로써 반복적인 수행을 가능하게 해줌.
 - 구조
 - ```sql
-- WITH 테이블이름네이밍 AS 
-(
-    #반복시킬 쿼리
-    SELECT 
-)
-
--```
+  WITH 테이블이름네이밍 AS 
+  (
+      #반복시킬 쿼리
+      SELECT 
+  )
+- ```
 
 
 ### DATE
 - DATEDIFF(날짜1, 날짜2);
 - TIMESTAMPDIFF(단위, 날짜1, 날짜2);
-- SECOND : 초
-  MINUTE : 분
-  HOUR : 시
-  DAY : 일
-  WEEK : 주
-  MONTH : 월
-  QUARTER : 분기
-  YEAR : 연
+  - SECOND : 초
+    MINUTE : 분
+    HOUR : 시
+    DAY : 일
+    WEEK : 주
+    MONTH : 월
+    QUARTER : 분기
+    YEAR : 연
 
 
 
@@ -158,7 +157,7 @@ FROM (SELECT PRODUCT_ID, FLOOR(PRICE/10000)*10000 AS PRICE
 		WHEN permission_type_id = 2
 		THEN '판매자'
 		ELSE '일반 유저'
-  🔥 END	
+  END	
   ```
 
 ### DATE

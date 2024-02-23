@@ -264,6 +264,78 @@
 
 
 ---
+### MYSQL
+- 열(칼럼) 별칭은 WHERE 절에서 사용 불가능
+- 문자열 합치기 CONCAT(STR1, STR2, ...)
+- a between b and c: b, c와 일치하는 것도 true. 그러나 아래 주의!
+  - BETWEEN '2012-01-22' AND '2012-01-23' 은
+  - BETWEEN '2012-01-22 00:00:00' AND '2012-01-23 00:00:00' 과 같은거
+- ```sql
+  WITH 테이블이름네이밍 AS 
+  (
+      #반복시킬 쿼리
+      SELECT 
+  )
+- ```
+- TIMESTAMPDIFF(단위, 날짜1, 날짜2);
+  - SECOND : 초
+    MINUTE : 분
+    HOUR : 시
+    DAY : 일
+    WEEK : 주
+    MONTH : 월
+    QUARTER : 분기
+    YEAR : 연
+- LEFT OUTER JOIN
+  - 첫 번째 테이블을 기준으로 두 번째 테이블을 조합
+  - 첫 번째 테이블은 모두 검색되어야 함.
+- SET @HOUR = -1;
+- LIKE
+  - 와일드 카드: 여러 파일을 한꺼번에 지정할 목적으로 사용하는 기호
+    - %: 0개 이상의 문자 대신 표현
+    - _: 1개의 문자표현
+      - _012 -> t012, 0012, a012
+    - \: %나 _를 포함하려면 \붙이면 됨.
+- IF(조건문, 참일 때 값, 거짓일 때 값)
+- IFNULL(column_name, '대체할 값')
+- 문자열 자르기
+  - SUBSTRING(STR, STARTIDX, COUNT) -- MID와 동일 (마지막 파라미터 인덱스가 아니라 개수다!!)
+  - LEFT(STR, COUNT)
+  - RIGHT(STR, COUNT)
+
+- 버림: TRUNCATE()
+  - SELECT TRUNCATE(1234.56789 ,1) FROM DUAL; 1234.5
+  - SELECT TRUNCATE(1234.56789 ,4) FROM DUAL; 1234.5678
+  - SELECT TRUNCATE(1234.56789 ,0) FROM DUAL; 1234
+  - SELECT TRUNCATE(1234.56789 ,-1) FROM DUAL; 1230
+  - SELECT TRUNCATE(1234.56789 ,-2) FROM DUAL; 1200
+- 제곱: POW(10, 2); 100
+- 나머지: MOD(10, 3); 1
+- 최댓값: GREATEST(3, 2, 1); 3
+- 최솟값: LEAST(3, 2, 1); 1
+
+- LIMIT x, y
+  - x+1번째항부터 y개 조회 (x+1 ~ x+y)
+  - SELECT title, content, writer FROM board LIMIT 3, 5;
+    - 4번째 항부터 8번째항까지 조회
+
+- UNION: 중복제외
+- UNION ALL: 중복 허용
+
+- 칼럼 내 값이 중복 있는지 점검하는 습관 좋다!! 중복에 민감해야해!!!!! 문제 처음 읽을 때! 이래서 설명도 읽어야 해
+- 고유 개수 세기에는 DISTINCT가 정말 유용한 듯.
+  - DISTINCT birthcity 이렇게도 사용가능함
+    - DISTINCT birthyear, birthMonth, birthday: 이건 세 개의 값이 모두 같은 행들만 중복으로 간주함. 1998,09,12 1998,09,12
+- 특정 요소를 하나라도 뽑지 않아야 한다면 not in 활용
+
+- 문제 제목 읽고 유추하기
+- 문제 서술 부분 훑어 읽으며 중요한 부분 있으면 캐치하자!!
+- 어려운 건 설계가 필요하다! 펜 쓰는 것도 감안해두기
+- 코드 중복, 코드 재사용성 연연하지 말자. 시간 복잡도가 있는 것도 아니니까. 코드 길어져도 초조해하지 말고 '정확성'에 초점 두자. 
+
+
+
+
 ### 풀이 전 행동강령
 #### 읽기
 - 차분하게 읽고, 설계에 충분한 투자를 하자. (쉬워보여도 다 지켜라!)
