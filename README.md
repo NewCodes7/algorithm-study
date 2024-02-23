@@ -101,7 +101,10 @@
 - sql 못 풀 수 있는 것도 감안하기. 너무 새롭고 모르겠으면 과감하게 포기하기.
 - 처음부터 너무 크게 만들지 말기. 나중에 테스트, 검증하는 것 감안해서 작은 것부터 확실하게 만들고 세밀하게 검증하자.
 - 알고리즘 풀다가 막히면 못 푼 문제 풀거나, 검토하러 가자. (전 문제는 잊고!)
-  
+
+- 정렬해서 출력하거나 처리해야 하는 문제들은 미리 전처리로 해결할 수도 있다!!
+- map에서 get할 때 우선 key있는지부터 containsKey로 점검해야해!!!
+- 검토할 때 예외 케이스 생각해보기. 테스트케이스 다 맞더라도 방심하지 말자.
 
 
 ### 풀이 전 행동강령
@@ -227,10 +230,11 @@
 - 연결성: 정렬, 삽입, 삭제 등 하면 다른 곳에서도 바뀐다는 걸 인지하자!!
 - 2차원 배열 복사 주의: int[][] clone = map.clone(); 이걸로 안 된다!!
 - Map 순회
-  - for (Map.Entry<String, String> entry : map.entrySet()) {
+  - for (Map.Entry<String, String> entry : **map.entrySet()**) {
   - String key = enrty.getKey();
   - String value = entry.getValue();}
-  - for (String key : map.keySet())
+  - 🔥 for (String key : **map.keySet()**)
+  - 🔥 for (String key : **map.values()**)
 - 우선순위 큐
   - PriorityQueue<type> pq = new PriorityQueue<>(); (우선순위가 낮은 숫자 순)
   - PriorityQueue<type> pq = new PriorityQueue<>(Comparator.reverseOrder());
@@ -262,6 +266,7 @@
   - 깔끔하게 복구되었는지 민감하게 거시적으로 확인하자.
 - 실수 주의: 조합에서는 for문 안에 일반적으로 i만 나온다! idx 아니라!!
 - 본질: for문 안에 dfs 생각해봐. 모든 경우의 수 돌기 위함. 이걸 풀어헤치면 dfs가 여러 줄 나올 수 있음!! 반복문에 얽매이지 말고, 어떤 결과를 구해야하는 지부터 파악하고, 그에 따라 코드 짜자.
+- 그래프 주의: 1번 부터 시작하면 n+1, i <= n이다!!!!
 
 ---
 ### 정렬
