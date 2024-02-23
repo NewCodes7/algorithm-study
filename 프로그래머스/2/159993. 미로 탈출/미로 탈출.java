@@ -1,13 +1,10 @@
 import java.util.*;
 
 class Solution {
-    private static int[][] d;
-    private static int[][] graph;
+    private static int[][] d, graph;
     private static int n, m;
     private static boolean[][] visited;
-    private static int[] start;
-    private static int[] lever;
-    private static int[] exit;
+    private static int[] start, lever, exit;
     private static int[] dx = {1, 0, -1, 0};
     private static int[] dy = {0, 1, 0, -1};
     
@@ -23,21 +20,11 @@ class Solution {
         for (int i = 0; i < n; i++) {
             String[] arr = maps[i].split("");
             for (int j = 0; j < m; j++) {
-                int c = 0;
-                if (arr[j].equals("O")) c = 1; // 통로
-                if (arr[j].equals("S")) { // 출발
-                    c = 1;
-                    start = new int[]{i, j};
-                }
-                if (arr[j].equals("L")) { // 레버
-                    c = 2;
-                    lever = new int[]{i, j};
-                }
-                if (arr[j].equals("E")) { // 출구
-                    c = 3;
-                    exit = new int[]{i, j};
-                }
-                
+                int c = 1;
+                if (arr[j].equals("X")) c = 0;
+                if (arr[j].equals("S")) start = new int[]{i, j};
+                if (arr[j].equals("L")) lever = new int[]{i, j};
+                if (arr[j].equals("E")) exit = new int[]{i, j};
                 graph[i][j] = c;
             }
         }
@@ -53,11 +40,8 @@ class Solution {
         bfs(lever);
         int time2 = d[exit[0]][exit[1]];
         if (time2 == 0) return -1;
-        
-        int answer = time1 + time2;
-        // System.out.println(Arrays.deepToString(graph));
     
-        return answer;
+        return time1 + time2;
     }
     
     public static void bfs(int[] arr) {
