@@ -244,6 +244,15 @@
   - peekLast()
 - 🔥 큐, 스택 순회 - 확장 for문으로 가능!
 
+- 🆘 큐에서 중간 요소 삭제하고 싶다면 remove메서드
+- 🆘 자료구조 remove 메서드 구분!! (리스트는 둘 다 됨)
+  - 큐, 덱, 우선순위 큐: remove(Object o)
+  - 스택: remove(int index)
+- 🆘 pq, q, s size를 기준으로 무언가를 할 때 조심해!!!!
+  - for (int i = 0; i < pq.size()-1; i++)
+    - 종료조건 실시간으로 변한다!
+    - while을 이용하자. while (pq.size() != 1)
+
 ---
 ### 백트랙킹, DFS, BFS
 - 🔥 본질: 순서, 문어발(위아래)
