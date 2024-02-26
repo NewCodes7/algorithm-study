@@ -1,46 +1,71 @@
 import java.util.*;
 
 class Solution {
-    private static HashSet<HashSet<String>> banned_list = new HashSet<>(); // Hashset이 아니다!!
+    private static boolean[] visited;
+    private static Set<String> set = new HashSet<>();
     
     public int solution(String[] user_id, String[] banned_id) {
-        dfs(user_id, banned_id, 0, new HashSet<>());
+        visited = new boolean[user_id.length];
         
-        return banned_list.size();
+        back(user_id, banned_id, 0, new String[banned_id.length]);
+        int answer = set.size();
+        
+        return answer;
     }
     
-    public static void dfs(String[] user_id, String[] banned_id, int idx, HashSet<String> set) {
-        if (idx == banned_id.length) {
-            banned_list.add(set);
+    public static void back(String[] user_id, String[] banned_id, int depth, String[] arr) {
+        if (depth == banned_id.length) { // 변경 필요
+            // System.out.println(Arrays.toString(arr));
+            // sort 하면 영향 미침..!
+            String[] arr2 = arr.clone();
+            Arrays.sort(arr2);
+            set.add(String.join("", arr2));
+            
             return;
         }
         
         for (int i = 0; i < user_id.length; i++) {
-            if (set.contains(user_id[i])) {
-                continue;
-            }
-            if (checkSame(user_id[i], banned_id[idx])) {
-                set.add(user_id[i]);
-                dfs(user_id, banned_id, idx + 1, new HashSet<>(set));
-                set.remove(user_id[i]); // 객체로 삭제.
+            // banned인지 점검 if문
+            if (isBanned(user_id[i], banned_id[depth])) {
+                if (!visited[i]) {
+                    visited[i] = true;
+                    arr[depth] = user_id[i];
+                    back(user_id, banned_id, depth+1, arr);
+                    visited[i] = false;
+                }
             }
         }
     }
     
-    public static boolean checkSame(String user, String banned) {
+    public static boolean isBanned(String user, String banned) {
         if (user.length() != banned.length()) return false;
-        for (int i = 0; i < user.length(); i++) {
-            if (banned.charAt(i) == '*') continue;
-            if (user.charAt(i) != banned.charAt(i)) return false;
+        
+        char[] arr = user.toCharArray();
+        char[] arr2 = banned.toCharArray();
+        
+        for (int i = 0; i < arr.length; i++) {
+            if (arr2[i] == '*') continue;
+            if (arr[i] != arr2[i]) return false;
         }
         
         return true;
     }
 }
 
-// 결과적으로 봤을 때 그게 중복됐잖아. 그러면 그걸 후처리하는 게 아니라 하면서 중복 피하는 방법 고려해야지. 시간 고려하자면. 그렇게 할 수 있는 게 userid set을 따로 파두는 것. 
+/*
+9:27~
 
-// banned 반복문 없어도 됨. user_id에서 반복하기에.. 굳이 이중반복문 필요없음. 하나씩 처리해나가면 되는거라. 어차피 무조건 나오기 마련. 
+순열? 이면 될 것 같다. 
+하나라면 상관x
+두개라면 반영가능
+세개라면 이또한 가능
 
+순서 정렬에 따라 가능한 모든 경우의 수가 나옴.
 
-// 시간 초과 나오면 거시적으로 봤어야 해.. 이중반복문. 
+fps, sss
+**s, ***라면?
+
+중복처리해야함. 이건 쉬움. -> 어떻게? 배열, 정렬, toString, Set
+
+순열 visited, 선택된 것
+*/
