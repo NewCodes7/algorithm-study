@@ -277,6 +277,10 @@
 - 🆘 private static boolean[][] visited;
   - 이런 거 선언했으면 할당하는 거 잊지 말자!! 이런 거 때문에 Null 에러 날 수도 있음.
 
+- 🆘 특정 행동을 계속 반복해야 한다면 -> 재귀 -> 백트랙킹, dfs, bfs
+- 🆘 그래프 탐색의 핵심 원리 - 반복, 노드, visited(종료)
+- 🆘 결과적 사고보다는 순차적 사고로 먼저 ㄱㄱ. 하나의 시행 단위를 인식하기.
+
 ---
 ### 정렬
 - 배열 내림차순: Arrays.sort(arr, Comparator.reverseOrder());
