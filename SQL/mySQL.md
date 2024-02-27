@@ -258,7 +258,7 @@ FROM (SELECT PRODUCT_ID, FLOOR(PRICE/10000)*10000 AS PRICE
 
 ### [185. Department Top Three Salaries]
 - 쿼리를 이중반복문처럼 구현할 수도 있음. 
-  - 각 열마다 where에 있는 서브쿼리를 실행함.
+  - 각 행마다 where에 있는 서브쿼리를 실행함.
 - ```sql
   SELECT D.name AS 'Department', E.name AS 'Employee', E.salary AS 'Salary' 
   FROM Employee E
