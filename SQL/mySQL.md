@@ -257,8 +257,10 @@ FROM (SELECT PRODUCT_ID, FLOOR(PRICE/10000)*10000 AS PRICE
 ## 리트코드 문제 피드백
 
 ### [185. Department Top Three Salaries]
-- 쿼리를 이중반복문처럼 구현할 수도 있음. 
+- 서브쿼리를 이용해 쿼리를 이중반복문처럼 구현할 수도 있음. 
   - 각 행마다 where에 있는 서브쿼리를 실행함.
+  - 서브쿼리에서 메인쿼리 컬럼 사용 가능함.
+  - 이를 통해, 특정 조건에 대한 충족을 좀 더 자유롭게 활용할 수 있음..!! [601. Human Traffic of Stadium] - 풀이 잘한듯. 윈도우 함수 풀이도 익혀보기.
 - ```sql
   SELECT D.name AS 'Department', E.name AS 'Employee', E.salary AS 'Salary' 
   FROM Employee E
@@ -274,3 +276,11 @@ FROM (SELECT PRODUCT_ID, FLOOR(PRICE/10000)*10000 AS PRICE
 - 서브쿼리에서 메인쿼리 컬럼 사용 가능함!!!
   - 반대는 불가능!
   - 자바 상속과 같은 개념
+
+### [262. Trips and Users]
+```sql
+SELECT REQUEST_AT AS Day, round(sum(if(status like 'cancelled%', 1, 0)) / COUNT(REQUEST_AT), 2) AS 'Cancellation Rate'
+FROM NOT_BANNED
+GROUP BY REQUEST_AT
+```
+- 위처럼 sum이나 count 집계함수 안에 if문을 통해 각 행마다의 값을 지정해줄 수 있다!!!
