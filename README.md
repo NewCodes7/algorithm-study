@@ -467,7 +467,9 @@ static int[][] rotate(int[][] arr) {
     - 🔥 DISTINCT birthyear, birthMonth, birthday: 이건 세 개의 값이 모두 같은 행들만 중복으로 간주함. 1998,09,12 1998,09,12
 - 🔥 특정 요소를 하나라도 뽑지 않아야 한다면 not in 활용
 
-
+- sql 실행순서
+  - FROM, WHERE, GROUP BY, HAVING, SELECT, ORDER BY
+  - 🆘🆘 그리고 각 행마다 순차적으로 실행된다!!!!!!
 - GROUP BY가 SELECT 보다 먼저 실행 되지만, SELECT의 alias를 사용할 수 있다. (DBMS가 알아서 해줌. mysql 기준)
   - GROUP BY, HAVING, ORDER BY에서 SELECT의 alias를 사용할 수 있다.
 
@@ -476,5 +478,10 @@ static int[][] rotate(int[][] arr) {
   - 서브쿼리에서 메인쿼리 컬럼 사용 가능함.
   - 이를 통해, 특정 조건에 대한 충족을 좀 더 자유롭게 활용할 수 있음..!!
 - sum이나 count 집계함수 안에 if문을 통해 각 행마다의 값을 지정해줄 수 있다!!!
+
+- 🆘 이것의 원리 자체가 해당 테이블의 행마다 하나씩 순차적으로 실행되기 때문.
+  - 🆘 그렇기에 없는 숫자들을 구현할 때는 그 옆에 있는 열들은 서브쿼리로 처리해야 함.
+
+
 
 ---
