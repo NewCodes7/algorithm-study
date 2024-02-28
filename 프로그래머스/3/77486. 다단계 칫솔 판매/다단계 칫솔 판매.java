@@ -19,9 +19,8 @@ class Solution {
         }
         
         int[] answer = new int[enroll.length];
-        List<Integer> list = new ArrayList<>(result.values());
         for (int i = 0; i < enroll.length; i++) {
-            answer[i] = list.get(i); // 성능 개선 가능 큐?
+            answer[i] = result.get(enroll[i]); // 성능 개선 가능 큐?
         }
         
         return answer;
