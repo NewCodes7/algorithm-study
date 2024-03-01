@@ -1,7 +1,7 @@
 import java.util.*;
 
 class Solution {
-    private static class Food implements Comparable<Food> {
+    private static class Food{
         int idx;
         int amount;
         
@@ -9,57 +9,65 @@ class Solution {
             this.idx = idx;
             this.amount = amount;
         }
-        
-        @Override
-        public int compareTo(Food other) {
-            return this.amount - other.amount;
-        }
     }
     
     public int solution(int[] food_times, long k) {
-        int answer = 0;
-        
-        PriorityQueue<Food> pq = new PriorityQueue<>();
+        int minAmount = 100000001;
+        Deque<Food> d = new ArrayDeque<>();
         for (int i = 0; i < food_times.length; i++) {
-            pq.offer(new Food(i+1, food_times[i]));
+            d.offer(new Food(i+1, food_times[i]));
+            minAmount = Math.min(minAmount, food_times[i]);
         }
         
-        boolean[] visited = new boolean[food_times.length+1];
-        int minus = 0;
-        int cnt = 0; // 다 먹은 음식 개수
-        while (!pq.isEmpty()) {
-            Food c = pq.poll();
+        for (long i = k; i > 0; i--) {
+            int size = d.size();
+            if (size == 0) break;
             
-            if ((long)(c.amount - minus) * (food_times.length-cnt) <= k) {
-                k -= (c.amount - minus) * (food_times.length-cnt);
-                minus += c.amount-minus; // 여기서!!
-                visited[c.idx] = true;
-                cnt++;
+            if (minAmount * size < i) {
+                int nextMinAmount = 100000001;
+                for (int j = 0; j < size; j++) {
+                    Food c = d.poll();
+                    c.amount -= minAmount;
+                    if (c.amount > 0) {
+                        nextMinAmount = Math.min(nextMinAmount, c.amount);
+                        d.offer(c);
+                    }
+                }
+                
+                i -= minAmount * size-1; // 아 원래 사이즈로 해야 함!!
+                minAmount = nextMinAmount;
+            } else if (minAmount * size == i) {
+                while (!d.isEmpty()) {
+                    Food c = d.poll();
+                    if (c.amount != minAmount) {
+                        return c.idx;
+                    }
+                }
             } else {
-                pq.offer(c);
-                break;
+                Food c = d.poll();
+                c.amount--;
+                if (c.amount > 0) d.offer(c);
             }
+            
         }
         
-        int idx = -1;
-        if (food_times.length - cnt == 0) return -1;
-        for (int i = 1; i < visited.length; i++) {
-            if (!visited[i]) idx++;
-            if (idx == k % (food_times.length - cnt)) { // 여기서 에러
-                return i;
-            }
-        }
+        if (d.isEmpty()) return -1;
         
-        return -1;
+        int answer = d.poll().idx;
+        
+        return answer;
     }
 }
 
 /*
-제일 적은 것부터 정렬
+11:48~
+시간 복잡도 줄여야 해...! 결과적 사고 가보자
 
-남은시간 확인 
-그만큼 플러스 해두기
+지금 최소인 amount * d.size() <= k
+    모조리 amount만큼 빼기
+그런데 짜잘한 녀석들이 있따면? 상관x 길이는 20만이기에.
 
-그게 안 된다면 %해서 반복문 돌기 이때 순서 어떻게? 
-    boolean[]으로? ㅇㅇ 2십만이니까 괜찮음  
+10,000,000,000,000
+
+일단 다른 풀이로 해보고, 추가적인 조치  더해보기
 */
