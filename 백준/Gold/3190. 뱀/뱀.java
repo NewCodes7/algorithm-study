@@ -1,84 +1,145 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-    private static final int[] dx = {-1, 0, 1, 0};
-    private static final int[] dy = {0, 1, 0, -1};
+    private static int[][] map;
+    private static int[][] apples;
+    private static Map<Integer, String> shifts = new HashMap<>();
+    private static int[] dx = {1, 0, -1, 0};
+    private static int[] dy = {0, 1, 0, -1};
+    private static int shift = 1; // 오른쪽 (왼쪽 -> 3)
+    // 아래 오른쪽 위 왼
+    private static Deque<int[]> snake = new ArrayDeque<>();
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
+        // 입력 받기
         int n = Integer.parseInt(br.readLine());
         int k = Integer.parseInt(br.readLine());
 
-        int[][] map = new int[n+1][n+1];
-//        List<int[]> apple = new ArrayList<>(); 사과 따로 생성할 필요없었음. 있는지 없는지 확인하는 건 map이 더 편해. 기억해라!!
+        map = new int[n + 1][n + 1];
+        apples = new int[n + 1][n + 1];
         for (int i = 0; i < k; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            map[Integer.parseInt(st.nextToken())][Integer.parseInt(st.nextToken())] = 1;
+            int x = Integer.parseInt(st.nextToken());
+            int y = Integer.parseInt(st.nextToken());
+
+            apples[x][y] = 2; // 사과
         }
 
         int l = Integer.parseInt(br.readLine());
-        Map<Integer, Integer> shifts = new HashMap<>(); // 이건 리스트보다는 맵!
         for (int i = 0; i < l; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            int s = Integer.parseInt(st.nextToken());
-            int d = -1;
-            if (st.nextToken().equals("D")) {
-                d = 1;
-            }
+            int second = Integer.parseInt(st.nextToken());
+            String shift = st.nextToken();
 
-            shifts.put(s, d);
+            shifts.put(second, shift);
         }
 
+//        System.out.println(Arrays.deepToString(map));
+//        System.out.println(shifts);
 
-        // 게임 시작
-        Deque<int[]> d = new ArrayDeque<>();
-        d.add(new int[] {1, 1});
-        int shift = 1;
-        int seconds = 0;
+        map[1][1] = 1;
+        snake.add(new int[] {1, 1});
 
-        outerLoop:
-        while(true) {
-            seconds++;
-            // 1. 몸길이 늘리기
-            int[] c = d.getFirst(); // 머리 꺼내기
-            int nx = c[0] + dx[shift];
-            int ny = c[1] + dy[shift];
-            int[] head = new int[]{nx, ny};
-            d.addFirst(head); // 여기서 실수 나왔었나? 머리 넣어두고 벽 검사해여함. 근데 머리 넣어두면 몸통닿았는지 확인 어려움.
+        int currentTime = 0;
+        boolean isGoing = true;
+        while (isGoing) {
+            currentTime++;
+            isGoing = move(currentTime);
+        }
 
-            // 2. 부딪혔는지 확인
-            if (nx < 1 || nx > n || ny < 1 || ny > n) {
-                break;
-            }
-            d.pollFirst(); // 머리 잠시 빼두기
-            for (int[] arr : d) {
-                if (arr[0] == nx && arr[1] == ny) {
-                    break outerLoop;
-//                    break; // 아..! for 문을 break 한거잖아!!!!
+        System.out.println(currentTime);
+
+    }
+
+    public static boolean move(int currentTime) {
+        int[] head = snake.getFirst();
+        int[] nextHead = new int[] {head[0] + dx[shift], head[1] + dy[shift]};
+
+        // 뱀의 몸에 닿았거나, 벽에 닿았는지 확인
+        if (isSafe(nextHead)) {
+            snake.addFirst(nextHead);
+            map[nextHead[0]][nextHead[1]] = 1;
+        } else {
+            return false;
+        }
+
+        // 사과 확인
+        if (apples[nextHead[0]][nextHead[1]] == 2) {
+            apples[nextHead[0]][nextHead[1]] = 0;
+        } else {
+            int[] tail = snake.getLast();
+            map[tail[0]][tail[1]] = 0;
+            snake.removeLast();
+        }
+
+        // 방향 전환 확인
+        if (shifts.containsKey(currentTime)) {
+            if (shifts.get(currentTime).equals("L")) {
+                shift++;
+                if (shift == 4) {
+                    shift = 0;
+                }
+            } else {
+                shift--;
+                if (shift == -1) {
+                    shift = 3;
                 }
             }
-            d.addFirst(head); // 원상 복구
-
-            // 3. 사과 체크 (있다면 유지, 없다면 꼬리 삭제)
-            if (map[nx][ny] != 1) {
-                d.pollLast();
-            } else {
-                map[nx][ny] = 0; // 사과 먹은 것 체크
-            }
-            // 여기까지 해서 움직임 1회 종료
-
-            // 4. 방향 체크
-            if (shifts.containsKey(seconds)) {
-                shift += shifts.get(seconds);
-                if (shift == 4)
-                    shift = 0;
-                if (shift == -1)
-                    shift = 3;
-            }
         }
 
-        System.out.println(seconds);
+        return true;
+    }
+
+    public static boolean isSafe(int[] nextHead) {
+        // 맵에서 벗어났는지 확인
+        if (nextHead[0] < 1 || nextHead[0] > map[0].length - 1 || nextHead[1] < 1 || nextHead[1] > map[0].length - 1) {
+            return false;
+        }
+
+        // 뱀의 몸인지 확인
+        if (map[nextHead[0]][nextHead[1]] == 1) {
+            return false;
+        }
+
+        return true;
     }
 }
+
+/*
+문제 조건
+1. 게임 시작 시 뱀 몸의 길이 1, 맨 위 맨 왼쪽(1, 1), 오른쪽
+2. 매 초 머리를 늘려 이동, 방향 전환(왼쪽 L, 오른쪽 D)도 존재
+3. 사과 유무에 따라 꼬리 유지 or 삭제
+4. 벽이나 몸에 부딪히면 게임 끝
+
+1초마다 이동하는 함수 구현하기
+    뱀의 머리 방향에 따라 움직이기 & time++
+    벽이나 몸에 부딪혔는지 확인하기
+        부딪혔다면 게임 끝
+        아니라면 고고
+    사과가 있다면 뱀 꼬리 유지, 없다면 자르기
+    방향 전환해야하는지 체크
+
+time 플러스한 뒤 이동 체크해야겠지?
+2차원 배열 위에서 사과, 뱀의 위치, 방향 전환 표현하기
+0 - 아무것도 없음
+1 - 뱀
+2 - 사과
+
+0 - 아무것도 없음
+1 - 왼쪽
+2 - 오른쪽
+한 배열에 표현하는 게 효과적일까?
+    왼쪽이면서 사과라면? -> 방향 정보는 따로 해두는 게 나을 듯. -> 배열, 큐가 아닌 맵으로!!
+
+뱀을 덱으로 구현해도 되긴 하겠다!
+
+추가 변수 -> 뱀의 머리 방향, 뱀의 머리와 꼬리 좌표
+
+덱으로 가자!!
+ */
