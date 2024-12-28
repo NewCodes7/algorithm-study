@@ -1,18 +1,8 @@
 function solution(l, r) {
-    const arr = new Array(r - l + 1).fill(l).map((c, i) => c + i);
+    const answer = Array.from({ length: r - l + 1 }, ((_, i) => i + l))
+                .filter(num => !/[^05]/.test(num));
     
-    const answer = arr.reduce((acc, cur) => {
-        if (cur.toString().split("").filter(c => c !== "5" && c !== "0").length === 0) {
-            acc.push(cur);
-        }
-        return acc;
-    }, []);
-    
-    if (answer.length === 0) {
-        answer.push(-1);
-    }
-    
-    return answer;
+    return answer.length ? answer : [-1];
 }
 
 /*
