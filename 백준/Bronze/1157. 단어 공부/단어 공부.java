@@ -11,11 +11,11 @@ public class Main {
         // 입력 받기
         String str = br.readLine();
         
-        Map<String, Integer> rank = new HashMap<>();
-        
-        String[] arr = str.split("");
+        Map<Character, Integer> rank = new HashMap<>();
+
+        char[] arr = str.toCharArray();
         for (int i = 0; i < arr.length; i++) {
-            String cur = arr[i].toLowerCase();
+            char cur = Character.toUpperCase(arr[i]);
 
             if (rank.containsKey(cur)) {
                 rank.put(cur, rank.get(cur) + 1);
@@ -24,17 +24,17 @@ public class Main {
             }
         }
 
-        String maxStr = null;
+        char maxStr = '?';
         int maxCount = 0;
-        for (String key : rank.keySet()) {
+        for (char key : rank.keySet()) {
             if (rank.get(key) > maxCount) {
                 maxStr = key;
                 maxCount = rank.get(key);
             } else if (rank.get(key) == maxCount) {
-                maxStr = "?";
+                maxStr = '?';
             }
         }
 
-        System.out.println(maxStr.toUpperCase());
+        System.out.println(maxStr);
     }
 }
