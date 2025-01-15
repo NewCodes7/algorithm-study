@@ -11,26 +11,22 @@ public class Main {
         // 입력 받기
         String str = br.readLine();
         
-        Map<Character, Integer> rank = new HashMap<>();
+        // Map<Character, Integer> rank = new HashMap<>();
+        int[] rank = new int[26];
 
         char[] arr = str.toCharArray();
         for (int i = 0; i < arr.length; i++) {
-            char cur = Character.toUpperCase(arr[i]);
-
-            if (rank.containsKey(cur)) {
-                rank.put(cur, rank.get(cur) + 1);
-            } else {
-                rank.put(cur, 1);
-            }
+            int idx = Character.toUpperCase(arr[i]) - 'A';
+            rank[idx]++;
         }
 
         char maxStr = '?';
         int maxCount = 0;
-        for (char key : rank.keySet()) {
-            if (rank.get(key) > maxCount) {
-                maxStr = key;
-                maxCount = rank.get(key);
-            } else if (rank.get(key) == maxCount) {
+        for (int i = 0; i < rank.length; i++) {
+            if (rank[i] > maxCount) {
+                maxStr = (char) (65 + i);
+                maxCount = rank[i];
+            } else if (rank[i] == maxCount) {
                 maxStr = '?';
             }
         }
