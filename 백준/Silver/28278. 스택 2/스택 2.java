@@ -12,6 +12,8 @@ public class Main {
         // 입력 받기
         int n = Integer.parseInt(br.readLine());
         List<Integer> q = new ArrayList<>();
+
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < n; i++) {
             String input = br.readLine();
             if (input.length() == 1) { // length()
@@ -25,12 +27,14 @@ public class Main {
                 } else if (input.equals("5")) {
                     result = process5(q);
                 }
-                System.out.println(result);
+                sb.append(result).append("\n");
             } else {
                 String[] arr = input.split(" "); // 더 나은 방법? 
                 process1(q, Integer.parseInt(arr[1]));
             }
         }
+
+        System.out.println(sb);
     }
 
     private static void process1(List<Integer> q, int X) {
@@ -66,11 +70,13 @@ public class Main {
 }
 
 /*
-10:50 ~ 
+10:50 ~ 11:06 16분! 
 
 1. parser
 2. stack 
 3. output
 
 개선하기 그 테이블 둬서! 
+
+4초 ㄷㄷ 개선이 필요하다!
  */
