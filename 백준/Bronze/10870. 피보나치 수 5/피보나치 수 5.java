@@ -4,6 +4,7 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
+    private static int[] dp;
 
     public static void main(String[] args) throws IOException {
 
@@ -11,6 +12,7 @@ public class Main {
 
         // 입력 받기
         int n = Integer.parseInt(br.readLine());
+        dp = new int[n + 1];
         int answer = fibo(n);
         System.out.println(answer);
     }
@@ -24,7 +26,11 @@ public class Main {
             return 1;
         }
 
-        return fibo(n - 1) + fibo(n - 2);
+        if (dp[n] != 0) {
+            return dp[n];
+        }
+
+        return dp[n] = fibo(n - 1) + fibo(n - 2);
     }
 
 }
