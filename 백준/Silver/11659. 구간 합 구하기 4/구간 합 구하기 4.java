@@ -11,22 +11,22 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         // 입력 받기
-        String[] arr = br.readLine().split(" ");
-        int n = Integer.parseInt(arr[0]);
-        int m = Integer.parseInt(arr[1]);
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
 
-        String[] nums = br.readLine().split(" ");
+        st = new StringTokenizer(br.readLine());
         int[] sum = new int[n];
-        sum[0] = Integer.parseInt(nums[0]);
+        sum[0] = Integer.parseInt(st.nextToken());
         for (int i = 1; i < n; i++) {
-            sum[i] = sum[i - 1] + Integer.parseInt(nums[i]);
+            sum[i] = sum[i - 1] + Integer.parseInt(st.nextToken());
         }
 
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < m; i++) {
-            String[] input = br.readLine().split(" ");
-            int a = Integer.parseInt(input[0]);
-            int b = Integer.parseInt(input[1]);
+            st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
 
             if (a == 1) {
                 sb.append(sum[b - 1]).append("\n");
