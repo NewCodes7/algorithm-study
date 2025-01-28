@@ -4,7 +4,9 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-    private static StringBuilder result = new StringBuilder();
+    private static int[] arr;
+    private static boolean[] visited;
+    private static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -13,26 +15,30 @@ public class Main {
         int n = Integer.parseInt(input.nextToken());
         int m = Integer.parseInt(input.nextToken());
 
-        back(n, m, new StringBuilder(), 0);
+        arr = new int[m];
+        visited = new boolean[n + 1];
 
-        System.out.println(result);
+        dfs(n, m, 0);
+        
+        System.out.println(sb);
     }
 
-    private static void back(int n, int m, StringBuilder sb, int depth) {
+    private static void dfs(int n, int m, int depth) {
         if (depth == m) {
-            result.append(sb.toString()).append("\n");
+            for (int num : arr) {
+                sb.append(num).append(" ");
+            }
+            sb.append("\n");
             return;
         }
 
-        for (int i = 1; i <= n; i++) {
-            if (sb.toString().contains(Integer.toString(i))) {
-                continue;
+        for (int i = 0; i < n; i++) {
+            if (!visited[i]) {
+                visited[i] = true;
+                arr[depth] = i + 1;
+                dfs(n, m, depth + 1);
+                visited[i] = false;
             }
-
-            sb.append(i).append(" ");
-            back(n, m, sb, depth + 1);
-            sb.deleteCharAt(sb.length() - 1);
-            sb.deleteCharAt(sb.length() - 1);
         }
     }
 }
