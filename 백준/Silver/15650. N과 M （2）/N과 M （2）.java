@@ -1,42 +1,49 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
-    static int N, M;
-    static char[] arr;
-    static boolean[] ck;
-    static StringBuilder sb = new StringBuilder();
+    private static StringBuilder sb = new StringBuilder();
+    private static int[] arr;
+    private static boolean[] visited;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
+        StringTokenizer input = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(input.nextToken());
+        int m = Integer.parseInt(input.nextToken());
+        arr = new int[m];
+        visited = new boolean[n + 1];
 
-        arr = new char[2 * M];
-        ck = new boolean[N + 1];
-        back(0, 0);
-        System.out.print(sb);
+        dfs(n, m, 0);
+
+        System.out.println(sb);
     }
 
-    static void back(int idx, int i) {
-        if (idx == M) {
-            arr[2 * M - 1] = '\n';
-            sb.append(arr); // arr를 통째로
-            return ;
+    private static void dfs(int n, int m, int depth) {
+        if (depth == m) {
+            for (int num : arr) {
+                sb.append(num).append(" ");
+            }
+            sb.append("\n");
+            return;
         }
 
-        for (i = i + 1; i <= N; i++) {
-            if (!ck[i]) {
-                ck[i] = true; // 방문 처리
-                arr[2 * idx] = (char)(i + '0'); // append 편하게 하려고 ' ' 이것도 쓰려고 char로 쓴 듯.
-                arr[2 * idx + 1] = ' '; // 미리 출력 형식 고려
-                back(idx + 1, i);
-                ck[i] = false;
-            }
+        int start;
+        if (depth == 0) {
+            start = 1;
+        } else {
+            start = arr[depth - 1];
+        }
+
+        for (int i = start; i <= n; i++) {
+            if (visited[i]) continue;
+            arr[depth] = i;
+            visited[i] = true;
+            dfs(n, m, depth + 1);
+            visited[i] = false;
         }
     }
 }
