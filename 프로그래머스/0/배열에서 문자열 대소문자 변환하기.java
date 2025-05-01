@@ -1,13 +1,8 @@
+import java.util.*;
+import java.util.stream.*;
+
 class Solution {
     public String[] solution(String[] strArr) {
-        String[] answer = new String[strArr.length];
-        for (int i = 0; i < answer.length; i++) {
-            if (i % 2 == 0) {
-                answer[i] = strArr[i].toLowerCase();
-            } else {
-                answer[i] = strArr[i].toUpperCase();
-            }
-        }
-        return answer;
+        return IntStream.range(0, strArr.length).mapToObj(i -> i % 2 == 0 ? strArr[i].toLowerCase() : strArr[i].toUpperCase()).toArray(String[]::new);
     }
 }
