@@ -2,32 +2,46 @@ import java.util.*;
 
 class Solution {
     public String solution(int[] numbers) {
-        String[] arr = new String[numbers.length];
+        String[] nums = new String[numbers.length];
         for (int i = 0; i < numbers.length; i++) {
-            arr[i] = Integer.toString(numbers[i]); // vs String.valueOf
+            nums[i] = Integer.toString(numbers[i]);
         }
         
-        Arrays.sort(arr, (c1, c2) -> (c2+c1).compareTo(c1+c2));
-        
-        if (arr[0].equals("0")) return "0";
-        
+        Arrays.sort(nums, (a, b) -> {
+            // while (a.length() != 4) {
+            //     a += a.charAt(a.length() - 1);
+            // }
+            // while (b.length() != 4) {
+            //     b += b.charAt(b.length() - 1);
+            // }
+            //System.out.println(a);
+            //System.out.println(b);
+            return (b + a).compareTo(a + b);
+        });
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < numbers.length; i++) {
-            sb.append(arr[i]);
+        // System.out.println(Arrays.toString(nums));
+        for (String s : nums) {
+            sb.append(s);
         }
-
+        
+        if (sb.toString().startsWith("0")) {
+            return "0";
+        }
+        
         return sb.toString();
     }
 }
-/*
-4 4 42 -> 44'42'
-4 1 42 -> 4'42'1
-두 자리, 세자리가 들어왔을 때 이게 최선인지를 점검해야 함. 
-유일한 숫자라면 그냥 들어가도 무방함. but 845, 8, 7, 6 이런식으로 있다면 점검. 845, 8, 1, 2
 
-9 -> 0까지 순차적 점검하는 방법
-첫자리 9인놈 찾고, 
-    유일하다면 배치
-    중복이라면 점검
-        조합인데 이거를 compareTo로 해결해버림..
+/*
+10:32 ~ 
+
+그리디? 
+
+가장 큰 것 기준으로 정렬하고 합치면 될 듯 
+숫자로 비교하는 게 아니라 string으로 비교하면 될 듯 
+
+compareTo 
+
+
+
 */
