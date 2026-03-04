@@ -1,49 +1,58 @@
+import java.util.*;
+
 class Solution {
     public int solution(String s) {
         int answer = 1000;
         
-        for (int i = 1; i <= s.length() / 2; i++) { // 소수점 버려도 무방
+        for (int i = 1; i <= s.length(); i++) {
+            char[] st = s.toCharArray();
+            StringBuilder str = new StringBuilder();
             StringBuilder sb = new StringBuilder();
-            // String before = s.substring(0, i);
-            int j = 0;
-            // if (!before.equals(s.substring(j, j+i))) {
-            //     sb.append(before);
-            // }
+            String before = "";
+            int count = 1;
+            //System.out.println(i);
             
-            // before가 아니라 after와 비교
-            int cnt = 1;
-            
-            while(true) {
-                String c = s.substring(j, j+i);
-                if (j+i+i > s.length()) { // -1이 아님!!
-                    if (cnt != 1) {
-                        sb.append(cnt);
-                        cnt = 1;
-                    }
-                    sb.append(c);
-                    sb.append(s.substring(j+i, s.length()));
-                    break;
+            for (int j = 0; j < st.length; j++) {
+                char t = st[j];
+                //System.out.println(t);
+                if (sb.length() < i) {
+                    sb.append(t);
                 }
                 
-                String after = s.substring(j+i, j+i+i);
-                
-                if (c.equals(after)) {
-                    cnt++;
-                } else {
-                    if (cnt != 1) {
-                        sb.append(cnt);
-                        cnt = 1;
+                if (sb.length() == i) {
+                    if (before.equals("")) {
+                        before = sb.toString();
+                        sb.setLength(0);
+                        continue;
                     }
-                    sb.append(c);
-                }
-                
-                j += i;
+                    
+                    if (before.equals(sb.toString())) { // more
+                        count++;
+                    } else { // flush
+                        if (count == 1) {
+                            str.append(before);
+                            before = sb.toString();
+                        } else {
+                            str.append(count + before);
+                            before = sb.toString();
+                        }
+                        count = 1;
+                    }
+                    sb.setLength(0);
+                } 
             }
-            answer = Math.min(answer, sb.length());
-        }
-        
-        if (s.length() == 1) {
-            return 1;
+            
+            if (count == 1) {
+                str.append(before);
+            } else {
+                str.append(count + before);
+            }
+            
+            str.append(sb.toString());
+            
+            //System.out.println(str.toString());
+            
+            answer = Math.min(str.length(), answer);
         }
         
         return answer;
@@ -51,11 +60,18 @@ class Solution {
 }
 
 /*
-앞에서부터 정해진 개수만큼 자르기 - 완전탐색 ?
+11:52~
 
-반복문 1 ~ s.length/2, substring
-    반복문 - 정해진 개수만큼 자르면서 중복되는지 확인 (그 다음 거랑!!)
-        중복되면 몇개인지 세고 저장하기 StringBuilder
-        중복 아니라면 저장하고 넘기기
-    max 확인 후 저장
+앞에서부터 정해진 길이만큼 잘라야 하나보네
+중간부터 못 자르고
+
+그리고 잘라둔 것끼리 같은지 확인 양옆
+    그 전꺼랑 같은지 확인 
+        이전에 같았을 때 지금은 다르다면 flush
+        그냥 다르다면 이전 거 save
+
+그리고 s의 길이만큼 반복하면서 최소 단위 구하기 
+
+
+
 */
