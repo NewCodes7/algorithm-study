@@ -1,117 +1,88 @@
 import java.util.*;
 
 class Solution {
-    static class Music {
-        private int order;
-        private int[] startTime; // hour, minutes
-        private int[] endTime;// hour, minutes
-        private String title;
-        private String contents;
-        
-        public Music(int order, int[] startTime, int[] endTime, String title, String contents) {
-            this.order = order;
-            this.startTime = startTime;
-            this.endTime = endTime;
-            this.title = title;
-            this.contents = contents;
-        }
-        
-        public String getTitle() {
-            return title;
-        }
-        
-        public int getOrder() {
-            return order;
-        }
-        
-        public int getPlayedTime() {
-            int playedTime = (endTime[0] * 60 + endTime[1]) - (startTime[0] * 60 + startTime[1]);
-            return playedTime;
-        }
-        
-        public String getPlayedContents() {
-            StringBuilder sb = new StringBuilder();
-            int playedTime = getPlayedTime();
-            
-            for (int i = 0; i < playedTime; i++) {
-                sb.append(contents.charAt(i % contents.length()));
-            }
-            
-            return sb.toString();
-        }
-    }
-    
     public String solution(String m, String[] musicinfos) {
-        m = convert(m);
-        List<Music> musicList = new ArrayList<>();
+        String answer = "(None)";
+        List<String> targets = List.of("C#", "D#", "F#", "G#", "A#");
         
-        // musicinfos -> Music 객체로 리스트에 저장
+        int maxLength = 0;
         for (int i = 0; i < musicinfos.length; i++) {
             String[] arr = musicinfos[i].split(",");
-            int[] startTime = new int[2];
-            startTime[0] = Integer.parseInt(arr[0].substring(0, 2));
-            startTime[1] = Integer.parseInt(arr[0].substring(3, 5));
-            int[] endTime = new int[2];
-            endTime[0] = Integer.parseInt(arr[1].substring(0, 2));
-            endTime[1] = Integer.parseInt(arr[1].substring(3, 5));
+            int start = Integer.parseInt(arr[0].split(":")[0]) * 60 + Integer.parseInt(arr[0].split(":")[1]);
+            int end = Integer.parseInt(arr[1].split(":")[0]) * 60 + Integer.parseInt(arr[1].split(":")[1]);
+            int duration = end - start;
+            String title = arr[2];
+            String[] info = arr[3].split("");
             
-            // #붙은 것들 대체하기
-            arr[3] = convert(arr[3]);
+            // 악보 펼치기 
+            StringBuilder sb = new StringBuilder();
+            int j = 0;
+            while (sb.length() != duration) {
+                j++;
+                String before = info[(j - 1) % info.length];
+                String target = info[j % info.length];
+                String add = before + target;
+                if (targets.contains(add)) {
+                    sb.append(targets.indexOf(add));
+                } else if (before.equals("#")) {
+                    continue;
+                } else {
+                    sb.append(before);
+                }
+            }
             
-            musicList.add(new Music(i, startTime, endTime, arr[2], arr[3]));
-        }
-        
-        // 조건에 만족되는 music 저장
-        List<Music> answerOptions = new ArrayList<>();
-        for (int i = 0; i < musicList.size(); i++) {
-            String playedContents = musicList.get(i).getPlayedContents();
-            if (playedContents.contains(m)) {
-                // System.out.println(playedContents.indexOf(m)); // indexOf!!
-                // int nextFinalIdx = playedContents.indexOf(m) + m.length();
-                // 아.. 처음 찾은 인덱스잖아..! 모든 일치하는 걸 고려하지 못하잖아!!
-                // 그러면 확실히 미리 바꾸는 게 편할 듯
-                
-                answerOptions.add(musicList.get(i));
+            // m 악보 펼치기 
+            StringBuilder user = new StringBuilder();
+            String[] temp = m.split("");
+            for (j = 1; j <= temp.length; j++) {
+                String before = temp[(j - 1) % temp.length];
+                String target = temp[j % temp.length];
+                String add = before + target;
+                if (targets.contains(add)) {
+                    user.append(targets.indexOf(add));
+                    j++;
+                } else if (before.equals("#")) {
+                    continue;
+                } else {
+                    user.append(before);
+                }
+            }
+            
+            // 매칭 
+            String server = sb.toString();
+            String client = user.toString();
+            //System.out.println(server.length());
+            //System.out.println(client);
+            if (server.contains(client) && duration > maxLength) {
+                maxLength = duration;
+                answer = title;
             }
         }
         
-        // music 선정
-        String answer = "(None)";
-        if (answerOptions.size() == 1) {
-            answer = answerOptions.get(0).getTitle();
-        } else if (answerOptions.size() >= 2) {
-            Collections.sort(answerOptions, (a, b) -> {
-                if (b.getPlayedTime() == a.getPlayedTime()) {
-                    return a.order - b.order;
-                }
-                return b.getPlayedTime() - a.getPlayedTime();
-            });
-            
-            answer = answerOptions.get(0).getTitle();
-        } 
-        
         return answer;
-    }
-    
-    public static String convert(String s) {
-        s = s.replaceAll("A#", "H"); // 할당해줘야해!! 원본을 변경하지 않아!
-        s = s.replaceAll("B#", "M"); // 할당해줘야해!! 원본을 변경하지 않아!
-        s = s.replaceAll("C#", "I");
-        s = s.replaceAll("D#", "G");
-        s = s.replaceAll("F#", "K");
-        s = s.replaceAll("G#", "L");
-    
-        return s; 
     }
 }
 
 /*
-C, C#, D, D#, E, F, F#, G, G#, A, A#, B 
+08:30~09:08 첫 시도 
 
-music 펼치기
-펼친 music 안에 m이 있는지 확인
-    확인할 때 뒤에 music 뒤에 #이 붙었는지 확인해야 함.
+음은 12개. C#, C 조심
 
-여러 개라면 재생된 시간 제일 긴 음악, 먼저 입력된 음악
+더 많이 겹치는 긴 시간x 재생시간 제일 긴 -> 먼저 입력된 
+
+시간만큼 일단 음을 펼쳐야 함 
+
+none으로 시작하기 
+musicinfos 하나씩 순회하면서 
+    시간만큼 음을 펼치기 - 음을 펼치면서 치환 (C# D# F# G# A#)
+    m과 매칭해보기 - #까지 맞는지 확인해야 함 (# 붙어있는 걸 다른 걸로 치환)
+        맞다면, 최장길이인지 확인
+            최장길이라면 저장
+            최장길이와 같다면 넘기기
+        틀리다면, 넘기기
+
+매칭이 까다롭지만
+m을 2번 반복한다면, 끊기는 것도 고려 가능 
+
 
 */
