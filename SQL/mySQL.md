@@ -222,7 +222,7 @@ FROM (SELECT PRODUCT_ID, FLOOR(PRICE/10000)*10000 AS PRICE
   - SELECT title, content, writer FROM board LIMIT 10;
 - 🔥 11번째 ~ 20번째 행 데이터 조회
   - SELECT title, content, writer FROM board LIMIT 10, 10;
-- 🔥 가장 큰 걸 고르고 싶다면
+- 🔥 정렬한 결과에서 **한 행만** 고를 때 LIMIT 1 사용. 최댓값에 해당하는 모든 행이 필요하면 MAX + 동등 비교로 동점자를 보존해야 함.
 ```sql
 (SELECT MEMBER_ID
                    FROM REST_REVIEW
@@ -288,3 +288,16 @@ FROM NOT_BANNED
 GROUP BY REQUEST_AT
 ```
 - 위처럼 sum이나 count 집계함수 안에 if문을 통해 각 행마다의 값을 지정해줄 수 있다!!!
+
+### [그룹별 조건에 맞는 식당 목록 출력하기] 2026-09-19 재풀이
+
+- [상세 피드백·기존/이번 풀이 비교](../프로그래머스/4/131124. 그룹별 조건에 맞는 식당 목록 출력하기/FEEDBACK_2026-09-19.md)
+- 풀이 시간: 21분. 회원별 집계 후 원본 리뷰를 조회하는 구조는 맞음.
+- 🔥 “가장 많다” + 유일성 보장 없음 → 공동 1위 반례부터 만들기.
+- IN으로 바꿔도 안쪽 LIMIT 1이 한 회원만 남기면 동점자를 놓침.
+- 회원별 COUNT(*) → MAX(CNT) → 최댓값과 같은 모든 회원 → 해당 회원의 개별 리뷰 조회.
+- 최종 한 행은 회원 한 명이 아니라 리뷰 한 건임. 바깥 GROUP BY/DISTINCT로 줄이지 않기.
+- REVIEW_ID가 NOT NULL이므로 이 문제에서 COUNT(REVIEW_ID)와 COUNT(*)의 결과는 같음.
+- 날짜 출력은 DATE_FORMAT(REVIEW_DATE, '%Y-%m-%d'), 정렬은 날짜 → 리뷰 텍스트.
+- MySQL의 IN 직접 서브쿼리에는 LIMIT 제한이 있음. 파생 테이블로 감싸면 회피할 수 있지만 동점 문제는 별도로 해결해야 함.
+- 세미콜론 자체는 정상적인 문장 구분자임. 실행 오류는 실제 메시지를 확인한 뒤 문법 문제와 실행 환경 문제를 구분하기.
