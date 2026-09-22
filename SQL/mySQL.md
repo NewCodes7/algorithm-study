@@ -136,7 +136,7 @@ FROM (SELECT PRODUCT_ID, FLOOR(PRICE/10000)*10000 AS PRICE
 
 ### IN
 - 집합 내부에 값이 존재하는지 여부를 확인합니다. (값 자체가 있는지 정확히 판단 %(x))
-- COLUM IN ('ABC') -> ture or false
+- COLUMN IN ('ABC') → TRUE / FALSE / UNKNOWN(NULL 비교). WHERE는 TRUE만 통과함.
 - 서브 쿼리 이용: COLUMN IN (SELECT ~~) 
 - 🔥 두개활용가능: (a.user, a.group) IN ('test2', 'B') (식품분류별 가장 비싼 식품의 정보 조회하기)
 - 🔥 특정 요소를 하나라도 뽑지 않아야 한다면 not in 활용 (특정 기간동안 대여 가능한 자동차들의 대여비용 구하기) - 한 번 더 풀기
@@ -301,3 +301,22 @@ GROUP BY REQUEST_AT
 - 날짜 출력은 DATE_FORMAT(REVIEW_DATE, '%Y-%m-%d'), 정렬은 날짜 → 리뷰 텍스트.
 - MySQL의 IN 직접 서브쿼리에는 LIMIT 제한이 있음. 파생 테이블로 감싸면 회피할 수 있지만 동점 문제는 별도로 해결해야 함.
 - 세미콜론 자체는 정상적인 문장 구분자임. 실행 오류는 실제 메시지를 확인한 뒤 문법 문제와 실행 환경 문제를 구분하기.
+
+### [특정 기간동안 대여 가능한 자동차들의 대여비용 구하기] 2026-09-22 재풀이
+
+- [상세 SQL·피드백·NULL 비교 예시](<../프로그래머스/4/157339. 특정 기간동안 대여 가능한 자동차들의 대여비용 구하기/FEEDBACK_2026-09-22.md>)
+- 풀이 시간: 17분 (13:26~13:43).
+- 🔥 안 겹치는 이력이 하나 있는 것과 겹치는 이력이 하나도 없는 것은 다름. 후자는 NOT IN / NOT EXISTS로 표현 가능.
+- 조인도 가능: 겹치는 이력을 LEFT JOIN하고 H.HISTORY_ID IS NULL 확인.
+- 기간 겹침: START_DATE <= 대상 종료일 AND END_DATE >= 대상 시작일. 경계 포함!
+- 요금 계산은 CTE로 분리. 문제의 정수 출력 조건은 FLOOR로 처리.
+- DISTINCT는 SELECT 전체 컬럼 조합에 적용. 행이 증식하지 않으면 불필요.
+- IN / NOT IN은 값의 포함 여부, EXISTS / NOT EXISTS는 조건을 만족하는 행의 존재 여부.
+- EXISTS의 SELECT 1은 값 비교가 아님. H.CAR_ID = A.CAR_ID 같은 상관 조건을 빠뜨리지 않기.
+- 🔥 3 IN (1, 3, NULL)은 TRUE. 3 IN (1, 2, NULL)은 UNKNOWN.
+- 🔥 3 NOT IN (1, 2, NULL)은 UNKNOWN. 남기려던 행도 WHERE에서 제외됨.
+- NOT IN 서브쿼리에서 NULL이 가능하면 IS NOT NULL로 제거하거나 NOT EXISTS 검토.
+- IN 목록에 NULL을 넣어도 NULL인 행을 찾지 못함. 필요하면 OR CAR_ID IS NULL.
+- NOT UNKNOWN도 UNKNOWN. WHERE에서는 TRUE만 남음.
+- 빈 서브쿼리 예외: NULL IN (빈 집합)은 FALSE, NULL NOT IN (빈 집합)은 TRUE.
+- 이번 문제는 양쪽 CAR_ID가 NOT NULL이므로 NOT IN 사용 가능. EXISTS가 항상 더 빠르다고 단정하지 않기.
