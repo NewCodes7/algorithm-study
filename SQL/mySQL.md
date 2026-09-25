@@ -320,3 +320,19 @@ GROUP BY REQUEST_AT
 - NOT UNKNOWN도 UNKNOWN. WHERE에서는 TRUE만 남음.
 - 빈 서브쿼리 예외: NULL IN (빈 집합)은 FALSE, NULL NOT IN (빈 집합)은 TRUE.
 - 이번 문제는 양쪽 CAR_ID가 NOT NULL이므로 NOT IN 사용 가능. EXISTS가 항상 더 빠르다고 단정하지 않기.
+
+
+### [자체 연습] 회원별 유효 결제 집계 — 2026-09-25
+
+- [상세 풀이·피드백](./연습문제/회원별%20유효%20결제%20집계/FEEDBACK_2026-09-25.md)
+- 유형: REGEXP, 문자열 정규화, CTE, GROUP BY, LEFT JOIN, COALESCE.
+- 🔥 문자열 정규화 전에 원본 형식을 먼저 검증한다. 잘못된 하이픈을 먼저 제거하면 잘못된 값이 정상처럼 보일 수 있음.
+- 🔥 JOIN/GROUP BY 기준 값의 표현 방식이 다르면 canonical form으로 통일한다. 이번 문제는 전화번호에서 PAY:와 -를 제거.
+- SUBSTRING(str, start[, len]): MySQL은 1-based. SUBSTRING(MEMO, 5)로 PAY: 제거.
+- REPLACE(str, old, new): REPLACE(PHONE, '-', '')로 하이픈 제거.
+- SELECT 열 alias는 MySQL에서 GROUP BY / HAVING / ORDER BY에 사용 가능. WHERE에서는 사용 불가.
+- alias와 원본 컬럼에 같은 이름을 붙이면 의미가 헷갈릴 수 있으므로 가공값은 PHONE, NORMAL_PHONE처럼 구분하기.
+- LEFT JOIN은 "모든 회원"처럼 기준 테이블의 행을 전부 보존해야 할 때 먼저 떠올리기.
+- COALESCE(..., 0)으로 출력값을 바꿨다면 ORDER BY도 최종 출력 alias 기준인지 확인하기.
+- COUNT(TX_ID)는 TX_ID가 PK/NOT NULL이라 COUNT(*)와 동일. AMOUNT=0도 한 건으로 센다.
+- 날짜 범위는 >= 시작 AND < 다음 구간 시작 형태가 경계 처리에 안전함.
