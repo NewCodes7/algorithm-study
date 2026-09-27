@@ -336,3 +336,13 @@ GROUP BY REQUEST_AT
 - COALESCE(..., 0)으로 출력값을 바꿨다면 ORDER BY도 최종 출력 alias 기준인지 확인하기.
 - COUNT(TX_ID)는 TX_ID가 PK/NOT NULL이라 COUNT(*)와 동일. AMOUNT=0도 한 건으로 센다.
 - 날짜 범위는 >= 시작 AND < 다음 구간 시작 형태가 경계 처리에 안전함.
+
+### [특정 세대의 대장균 찾기] 2026-09-27
+
+- [상세 풀이·SECOND 키워드 오류 정리](<../프로그래머스/4/301650. 특정 세대의 대장균 찾기/FEEDBACK_2026-09-27.md>)
+- 🔥 계층형 SELF JOIN: A=3세대, B=2세대, C=1세대로 두고 A.PARENT_ID=B.ID, B.PARENT_ID=C.ID를 연결.
+- 🔥 마지막 조상의 PARENT_ID IS NULL을 확인해야 정확히 원하는 세대가 됨. 없으면 더 깊은 세대의 연속된 3개 관계도 잡힐 수 있음.
+- `WITH SECOND AS (...)` 사용 시 프로그래머스에서 `Only SELECT statements are allowed` 발생.
+- 프로그래머스가 WITH/CTE 자체를 막는 것은 아님. `SECOND_GEN`으로 이름을 바꾸면 정상 실행됨.
+- `SECOND`는 MySQL에서 시간 단위에 쓰이는 키워드지만 예약어는 아님. 플랫폼의 사전 SQL 검증기와 충돌한 것으로 추정.
+- 코테에서는 CTE/alias 이름을 `SECOND_GEN`, `GEN2`처럼 SQL 키워드와 겹치지 않게 짓기.
